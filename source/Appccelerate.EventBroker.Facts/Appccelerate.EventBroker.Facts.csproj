@@ -103,6 +103,6 @@
   <PropertyGroup>
     <PrepareForBuildDependsOn Condition="!Exists('$(StyleCopMSBuildTargetsFile)')">StyleCopMSBuildTargetsNotFound;$(PrepareForBuildDependsOn)</PrepareForBuildDependsOn>
   </PropertyGroup>
-  <Import Project="..\packages\Appccelerate.Development.0.7\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.7\build\Appccelerate.development.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.Facts.0.7\build\Appccelerate.Development.Facts.targets" Condition="Exists('..\packages\Appccelerate.Development.Facts.0.7\build\Appccelerate.Development.Facts.targets')" />
+  <Import Project="..\packages\Appccelerate.Development.0.8\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.8\build\Appccelerate.development.targets')" />
+  <Import Project="..\packages\Appccelerate.Development.Facts.0.8\build\Appccelerate.Development.Facts.targets" Condition="Exists('..\packages\Appccelerate.Development.Facts.0.8\build\Appccelerate.Development.Facts.targets')" />
 </Project>

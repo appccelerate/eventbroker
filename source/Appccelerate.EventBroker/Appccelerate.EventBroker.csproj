@@ -124,6 +124,7 @@
     <Compile Include="Matchers\Scope\SubscribeToChildren.cs" />
     <Compile Include="Matchers\Scope\SubscribeToParents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\GlobalAssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Appccelerate.Public.snk" />
@@ -165,6 +166,6 @@
   <PropertyGroup>
     <PrepareForBuildDependsOn Condition="!Exists('$(StyleCopMSBuildTargetsFile)')">StyleCopMSBuildTargetsNotFound;$(PrepareForBuildDependsOn)</PrepareForBuildDependsOn>
   </PropertyGroup>
-  <Import Project="..\packages\Appccelerate.Development.0.7\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.7\build\Appccelerate.development.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.ProductionCode.0.7\build\Appccelerate.development.ProductionCode.targets" Condition="Exists('..\packages\Appccelerate.Development.ProductionCode.0.7\build\Appccelerate.development.ProductionCode.targets')" />
+  <Import Project="..\packages\Appccelerate.Development.0.8\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.8\build\Appccelerate.development.targets')" />
+  <Import Project="..\packages\Appccelerate.Development.ProductionCode.0.8\build\Appccelerate.development.ProductionCode.targets" Condition="Exists('..\packages\Appccelerate.Development.ProductionCode.0.8\build\Appccelerate.development.ProductionCode.targets')" />
 </Project>
