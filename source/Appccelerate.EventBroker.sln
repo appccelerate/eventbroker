@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appccelerate.EventBroker.Sp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appccelerate.EventBroker.Performance", "Appccelerate.EventBroker.Performance\Appccelerate.EventBroker.Performance.csproj", "{0D9D3317-BF5A-4260-958C-C7709D1334B4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appccelerate.EventBroker.Sample", "Appccelerate.EventBroker.Sample\Appccelerate.EventBroker.Sample.csproj", "{90ECA914-28E3-4D9F-AD98-73D9A3DC4509}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,16 @@ Global
 		{0D9D3317-BF5A-4260-958C-C7709D1334B4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{0D9D3317-BF5A-4260-958C-C7709D1334B4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0D9D3317-BF5A-4260-958C-C7709D1334B4}.Release|x86.ActiveCfg = Release|Any CPU
+		{90ECA914-28E3-4D9F-AD98-73D9A3DC4509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90ECA914-28E3-4D9F-AD98-73D9A3DC4509}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90ECA914-28E3-4D9F-AD98-73D9A3DC4509}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{90ECA914-28E3-4D9F-AD98-73D9A3DC4509}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{90ECA914-28E3-4D9F-AD98-73D9A3DC4509}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{90ECA914-28E3-4D9F-AD98-73D9A3DC4509}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90ECA914-28E3-4D9F-AD98-73D9A3DC4509}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90ECA914-28E3-4D9F-AD98-73D9A3DC4509}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{90ECA914-28E3-4D9F-AD98-73D9A3DC4509}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{90ECA914-28E3-4D9F-AD98-73D9A3DC4509}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
