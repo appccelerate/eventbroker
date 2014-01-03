@@ -10,6 +10,7 @@
     <projectUrl>https://github.com/appccelerate/eventbroker</projectUrl>
     <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
+	<summary>Notification component for synchronous and asynchronous loosely coupled notification with automatic thread switching.</summary>
     <description>Notification component for synchronous and asynchronous loosely coupled notification with automatic thread switching:
       synchronous and asynchronous notification,
       automatic thread switching: to background or UI thread,
@@ -32,6 +33,7 @@
   </metadata>
   <files>
     <file src="..\..\binaries\Release\Appccelerate.EventBroker.dll" target="lib\net45" />
+    <file src="..\..\binaries\Release\Appccelerate.EventBroker.pdb" target="lib\net45" />
     <file src="..\..\binaries\Release\Appccelerate.EventBroker.xml" target="lib\net45" />
     <file src="..\..\source\Appccelerate.EventBroker\**\*.cs" target="src" />
   </files>  
