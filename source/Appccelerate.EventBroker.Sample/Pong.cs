@@ -43,11 +43,6 @@ namespace Appccelerate.EventBroker.Sample
             this.UiFromUiEvent(this, EventArgs.Empty);
         }
 
-        /// <summary>
-        /// Handles an asynchronous ping.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The event arguments.</param>
         [EventSubscription(EventTopics.PingUIFromAsync, typeof(Handlers.OnBackground))]
         public void HandlePingUiFromAsync()
         {

@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\binaries\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,11 +24,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\binaries\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\binaries\Release\Appccelerate.EventBroker.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Appccelerate.EventBroker.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Appccelerate.Fundamentals">
-      <HintPath>..\packages\Appccelerate.Fundamentals\lib\net45\Appccelerate.Fundamentals.dll</HintPath>
+      <HintPath>..\packages\Appccelerate.Fundamentals.2.1.0-Unstable30\lib\portable-windows8+net45\Appccelerate.Fundamentals.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -135,7 +135,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets" Condition="Exists('..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets')" />
-  <Import Project="..\packages\RippleRestoreTask.0.1.4\build\RippleRestoreTask.targets" Condition="Exists('..\packages\RippleRestoreTask.0.1.4\build\RippleRestoreTask.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -166,6 +165,6 @@
   <PropertyGroup>
     <PrepareForBuildDependsOn Condition="!Exists('$(StyleCopMSBuildTargetsFile)')">StyleCopMSBuildTargetsNotFound;$(PrepareForBuildDependsOn)</PrepareForBuildDependsOn>
   </PropertyGroup>
-  <Import Project="..\packages\Appccelerate.Development.0.8\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.8\build\Appccelerate.development.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.ProductionCode.0.8\build\Appccelerate.development.ProductionCode.targets" Condition="Exists('..\packages\Appccelerate.Development.ProductionCode.0.8\build\Appccelerate.development.ProductionCode.targets')" />
+  <Import Project="..\packages\Appccelerate.Development.0.10\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.10\build\Appccelerate.development.targets')" />
+  <Import Project="..\packages\Appccelerate.Development.ProductionCode.0.10\build\Appccelerate.development.ProductionCode.targets" Condition="Exists('..\packages\Appccelerate.Development.ProductionCode.0.10\build\Appccelerate.development.ProductionCode.targets')" />
 </Project>

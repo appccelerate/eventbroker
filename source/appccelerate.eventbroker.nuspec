@@ -32,9 +32,9 @@
     <dependencies/>	
   </metadata>
   <files>
-    <file src="..\..\binaries\Release\Appccelerate.EventBroker.dll" target="lib\net45" />
-    <file src="..\..\binaries\Release\Appccelerate.EventBroker.pdb" target="lib\net45" />
-    <file src="..\..\binaries\Release\Appccelerate.EventBroker.xml" target="lib\net45" />
-    <file src="..\..\source\Appccelerate.EventBroker\**\*.cs" target="src" />
+    <file src="Appccelerate.EventBroker\bin\Release\Appccelerate.EventBroker.dll" target="lib\net45" />
+    <file src="Appccelerate.EventBroker\bin\Release\Appccelerate.EventBroker.pdb" target="lib\net45" />
+    <file src="Appccelerate.EventBroker\bin\Release\Appccelerate.EventBroker.xml" target="lib\net45" />
+    <file src="Appccelerate.EventBroker\**\*.cs" target="src" />
   </files>  
 </package>
