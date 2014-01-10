@@ -29,7 +29,9 @@
       <frameworkAssembly assemblyName="System" targetFramework="net45" />
       <frameworkAssembly assemblyName="System.Core" targetFramework="net45" />
     </frameworkAssemblies>
-    <dependencies/>	
+    <dependencies>
+        <dependency id="Appccelerate.Fundamentals" version="[2,3)" />
+    </dependencies>
   </metadata>
   <files>
     <file src="Appccelerate.EventBroker\bin\Release\Appccelerate.EventBroker.dll" target="lib\net45" />
