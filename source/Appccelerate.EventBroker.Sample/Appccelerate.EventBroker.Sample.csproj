@@ -37,7 +37,7 @@
   <ItemGroup>
     <Reference Include="Appccelerate.Fundamentals, Version=2.1.0.0, Culture=neutral, PublicKeyToken=917bca444d1f2b4c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Appccelerate.Fundamentals.2.1.0-Unstable30\lib\portable-windows8+net45\Appccelerate.Fundamentals.dll</HintPath>
+      <HintPath>..\packages\Appccelerate.Fundamentals.2.1.0-Unstable31\lib\portable-windows8+net45\Appccelerate.Fundamentals.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -128,6 +128,7 @@
   <PropertyGroup>
     <PrepareForBuildDependsOn Condition="!Exists('$(StyleCopMSBuildTargetsFile)')">StyleCopMSBuildTargetsNotFound;$(PrepareForBuildDependsOn)</PrepareForBuildDependsOn>
   </PropertyGroup>
-  <Import Project="..\packages\Appccelerate.Development.0.10\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.10\build\Appccelerate.development.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.ProductionCode.0.10\build\Appccelerate.development.ProductionCode.targets" Condition="Exists('..\packages\Appccelerate.Development.ProductionCode.0.10\build\Appccelerate.development.ProductionCode.targets')" />
+  <Import Project="..\packages\Appccelerate.CheckNugetDependenciesTask.0.2.0-Unstable4\build\Appccelerate.CheckNugetDependenciesTask.targets" Condition="Exists('..\packages\Appccelerate.CheckNugetDependenciesTask.0.2.0-Unstable4\build\Appccelerate.CheckNugetDependenciesTask.targets')" />
+  <Import Project="..\packages\Appccelerate.Development.ProductionCode.0.18\build\Appccelerate.development.ProductionCode.targets" Condition="Exists('..\packages\Appccelerate.Development.ProductionCode.0.18\build\Appccelerate.development.ProductionCode.targets')" />
+  <Import Project="..\packages\Appccelerate.Development.0.18\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.18\build\Appccelerate.development.targets')" />
 </Project>

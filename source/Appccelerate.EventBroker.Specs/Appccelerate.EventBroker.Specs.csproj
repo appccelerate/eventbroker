@@ -34,7 +34,7 @@
   <ItemGroup>
     <Reference Include="Appccelerate.Fundamentals, Version=2.1.0.0, Culture=neutral, PublicKeyToken=917bca444d1f2b4c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Appccelerate.Fundamentals.2.1.0-Unstable30\lib\portable-windows8+net45\Appccelerate.Fundamentals.dll</HintPath>
+      <HintPath>..\packages\Appccelerate.Fundamentals.2.1.0-Unstable31\lib\portable-windows8+net45\Appccelerate.Fundamentals.dll</HintPath>
     </Reference>
     <Reference Include="FakeItEasy, Version=1.15.0.0, Culture=neutral, PublicKeyToken=eff28e2146d5fd2c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -138,6 +138,6 @@
     <PrepareForBuildDependsOn Condition="!Exists('$(StyleCopMSBuildTargetsFile)')">StyleCopMSBuildTargetsNotFound;$(PrepareForBuildDependsOn)</PrepareForBuildDependsOn>
   </PropertyGroup>
   <Import Project="..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets" Condition="Exists('..\packages\GitFlowVersionTask.0.14.0\Build\GitFlowVersionTask.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.0.10\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.10\build\Appccelerate.development.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.Specs.0.10\build\Appccelerate.Development.Specs.targets" Condition="Exists('..\packages\Appccelerate.Development.Specs.0.10\build\Appccelerate.Development.Specs.targets')" />
+  <Import Project="..\packages\Appccelerate.Development.Specs.0.18\build\Appccelerate.Development.Specs.targets" Condition="Exists('..\packages\Appccelerate.Development.Specs.0.18\build\Appccelerate.Development.Specs.targets')" />
+  <Import Project="..\packages\Appccelerate.Development.0.18\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.18\build\Appccelerate.development.targets')" />
 </Project>
