@@ -8,6 +8,7 @@ namespace Appccelerate.EventBroker.Sample
 {
     using System;
     using System.Threading;
+    using System.Threading.Tasks;
     using Appccelerate.EventBroker.Handlers;
     using Appccelerate.Events;
 
@@ -37,16 +38,16 @@ namespace Appccelerate.EventBroker.Sample
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments</param>
         [EventSubscription(EventTopics.PingUIFromUIThread, typeof(Handlers.OnPublisher))]
-        public void HandlePingUiFromUiThread(object sender, EventArgs e)
+        public async void HandlePingUiFromUiThread(object sender, EventArgs e)
         {
-            Wait();
+            await Task.Delay(3000);
             this.UiFromUiEvent(this, EventArgs.Empty);
         }
 
         [EventSubscription(EventTopics.PingUIFromAsync, typeof(Handlers.OnBackground))]
-        public void HandlePingUiFromAsync()
+        public async void HandlePingUiFromAsync()
         {
-            Wait();
+            await Task.Delay(3000);
             this.UiFromAsyncEvent(this, EventArgs.Empty);
         }
 
@@ -64,11 +65,6 @@ namespace Appccelerate.EventBroker.Sample
         public void HandleException()
         {
             throw new Exception("evil subscriber");
-        }
-
-        private static void Wait()
-        {
-            System.Threading.Thread.Sleep(3000);
         }
     }
 }
