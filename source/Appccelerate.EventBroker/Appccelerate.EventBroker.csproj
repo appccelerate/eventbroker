@@ -127,6 +127,7 @@
     <Compile Include="Properties\GlobalAssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="appccelerate.eventbroker.nuspec" />
     <None Include="Appccelerate.Public.snk" />
     <None Include="Appccelerate.snk" />
     <None Include="NuGet.config" />

@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/appccelerate/eventbroker</projectUrl>
     <iconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-	<summary>Notification component for synchronous and asynchronous loosely coupled notification with automatic thread switching.</summary>
+    <summary>Notification component for synchronous and asynchronous loosely coupled notification with automatic thread switching.</summary>
     <description>Notification component for synchronous and asynchronous loosely coupled notification with automatic thread switching:
       synchronous and asynchronous notification,
       automatic thread switching: to background or UI thread,
@@ -20,12 +20,12 @@
       matchers for publications and subscriptions,
       thorough customizable logging,
       extension support.</description>
-	<releaseNotes>
+    <releaseNotes>
       Fixed missing call to base.Initialize in OnUserInterface and OnUserInterfaceAsync handlers resulting in NullReferenceExceptions on ExtensionHost.
     </releaseNotes>
     <copyright>Copyright 2012-2014</copyright>
     <tags>Appccelerate</tags>
-	<frameworkAssemblies>
+    <frameworkAssemblies>
       <frameworkAssembly assemblyName="System" targetFramework="net45" />
       <frameworkAssembly assemblyName="System.Core" targetFramework="net45" />
     </frameworkAssemblies>
@@ -34,9 +34,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Appccelerate.EventBroker\bin\Release\Appccelerate.EventBroker.dll" target="lib\net45" />
-    <file src="Appccelerate.EventBroker\bin\Release\Appccelerate.EventBroker.pdb" target="lib\net45" />
-    <file src="Appccelerate.EventBroker\bin\Release\Appccelerate.EventBroker.xml" target="lib\net45" />
-    <file src="Appccelerate.EventBroker\**\*.cs" target="src" />
+    <file src="bin\Release\Appccelerate.EventBroker.dll" target="lib\net45" />
+    <file src="bin\Release\Appccelerate.EventBroker.pdb" target="lib\net45" />
+    <file src="bin\Release\Appccelerate.EventBroker.xml" target="lib\net45" />
+    <file src="**\*.cs" target="src" />
   </files>  
 </package>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appccelerate.EventBroker", "Appccelerate.EventBroker\Appccelerate.EventBroker.csproj", "{74A6407B-55B6-4F03-BA5C-44489DEC6D32}"
 EndProject
@@ -12,11 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appccelerate.EventBroker.Performance", "Appccelerate.EventBroker.Performance\Appccelerate.EventBroker.Performance.csproj", "{0D9D3317-BF5A-4260-958C-C7709D1334B4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Appccelerate.EventBroker.Sample", "Appccelerate.EventBroker.Sample\Appccelerate.EventBroker.Sample.csproj", "{90ECA914-28E3-4D9F-AD98-73D9A3DC4509}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{32CA9D5B-BE83-4776-88CA-AD35E4456938}"
-	ProjectSection(SolutionItems) = preProject
-		appccelerate.eventbroker.nuspec = appccelerate.eventbroker.nuspec
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
