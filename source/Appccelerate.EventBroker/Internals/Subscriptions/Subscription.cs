@@ -117,14 +117,15 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
 
         private void EventTopicFireHandler(IEventTopicInfo eventTopic, object sender, EventArgs e, IPublication publication)
         {
-            if (this.Subscriber == null)
+            var target = this.Subscriber;
+            if (target == null)
             {
                 return;
             }
 
             this.extensionHost.ForEach(extension => extension.RelayingEvent(eventTopic, publication, this, this.handler, sender, e));
 
-            this.handler.Handle(eventTopic, this.Subscriber, sender, e, this.delegateWrapper);
+            this.handler.Handle(eventTopic, target, sender, e, this.delegateWrapper);
 
             this.extensionHost.ForEach(extension => extension.RelayedEvent(eventTopic, publication, this, this.handler, sender, e));
         }
