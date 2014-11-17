@@ -108,10 +108,12 @@ namespace Appccelerate.EventBroker.Internals.Publications
         /// </remarks>
         protected override void Dispose(bool disposing)
         {
+            object publisher = this.Publisher;
+
             if (disposing && this.IsPublisherAlive)
             {
                 this.eventInfo.RemoveEventHandler(
-                    this.Publisher,
+                    publisher,
                     Delegate.CreateDelegate(this.eventInfo.EventHandlerType, this, this.GetType().GetMethod("PublicationHandler")));
             }
         }
