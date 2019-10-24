@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net47;netstandard2.0</TargetFrameworks>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -64,6 +63,7 @@
   </ItemGroup>
   <PropertyGroup>
     <MinVerAutoIncrement>Minor</MinVerAutoIncrement>
+    <MinVerbosity>diagnostic</MinVerbosity>
   </PropertyGroup>
 
   <!-- license -->
