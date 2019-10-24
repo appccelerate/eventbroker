@@ -14,9 +14,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Appccelerate.Fundamentals" Version="2.8.0" />
-    <PackageReference Include="Appccelerate.VersionTask" Version="1.39.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="FakeItEasy" Version="1.25.1" />
     <PackageReference Include="FluentAssertions" Version="3.2.2" />
     <PackageReference Include="Machine.Specifications" Version="0.9.1" />

@@ -55,11 +55,18 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>../Analyzers.Productive.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  
+
+  <!-- versioning -->
   <ItemGroup>
-    <PackageReference Include="Appccelerate.VersionTask" Version="1.39.0">
+    <PackageReference Include="MinVer" Version="2.0.0">
       <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <!-- license -->
+  <ItemGroup>
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Appccelerate.Public.snk" />
