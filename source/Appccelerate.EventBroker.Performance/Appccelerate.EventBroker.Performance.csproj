@@ -3,16 +3,17 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Appccelerate.EventBroker</RootNamespace>
     <TargetFramework>net47</TargetFramework>
-    <CheckNugetDependenciesTask_Enabled>false</CheckNugetDependenciesTask_Enabled>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
+
+  <PropertyGroup>
+    <Title>Appccelerate.EventBroker.Performance</Title>
+    <Copyright>Copyright ©  2008-2019</Copyright>
+    <Authors>Appccelerate team</Authors>
+    <Company>Appccelerate</Company>
+    <Product>Appccelerate</Product>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-  </PropertyGroup>
+  
   <PropertyGroup>
     <AssemblyOriginatorKeyFile />
   </PropertyGroup>

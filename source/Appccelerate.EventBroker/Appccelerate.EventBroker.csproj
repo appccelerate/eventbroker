@@ -2,15 +2,14 @@
   <PropertyGroup>
     <TargetFrameworks>net47;netstandard2.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <DocumentationFile>bin\$(Configuration)\Appccelerate.EventBroker.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
+
+  <PropertyGroup>
+    <Title>Appccelerate.EventBroker</Title>
+    <Copyright>Copyright ©  2008-2019</Copyright>
+    <Authors>Appccelerate team</Authors>
+    <Company>Appccelerate</Company>
+    <Product>Appccelerate</Product>
   </PropertyGroup>
 
   <!-- nuget package -->
@@ -57,6 +56,9 @@
   </PropertyGroup>
 
   <!-- versioning -->
+  <PropertyGroup>
+    <RollForward>minor</RollForward>    
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MinVer" Version="2.0.0">
       <PrivateAssets>all</PrivateAssets>
