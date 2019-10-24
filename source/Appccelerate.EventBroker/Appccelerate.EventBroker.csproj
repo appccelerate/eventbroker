@@ -56,20 +56,26 @@
   </PropertyGroup>
 
   <!-- versioning -->
-  <PropertyGroup>
-    <RollForward>minor</RollForward>    
-  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MinVer" Version="2.0.0">
+    <PackageReference Include="MinVer" Version="1.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+  <PropertyGroup>
+    <MinVerAutoIncrement>Minor</MinVerAutoIncrement>
+  </PropertyGroup>
 
   <!-- license -->
   <ItemGroup>
     <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
+
+  <!-- xml documentation file generation -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+  
   <ItemGroup>
     <None Include="Appccelerate.Public.snk" />
     <None Include="Appccelerate.snk" />
