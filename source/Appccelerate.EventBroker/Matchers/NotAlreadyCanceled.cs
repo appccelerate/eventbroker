@@ -51,7 +51,7 @@ namespace Appccelerate.EventBroker.Matchers
         /// <param name="writer">The writer the description is written to.</param>
         public void DescribeTo(TextWriter writer)
         {
-            Ensure.ArgumentNotNull(writer, "writer");
+            Guard.AgainstNullArgument(nameof(writer), writer);
 
             writer.Write("event arguments (CancelEventArgs) are not yet canceled");
         }

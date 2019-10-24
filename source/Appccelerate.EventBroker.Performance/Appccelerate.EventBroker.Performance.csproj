@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <RootNamespace>Appccelerate.EventBroker</RootNamespace>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net47</TargetFramework>
     <CheckNugetDependenciesTask_Enabled>false</CheckNugetDependenciesTask_Enabled>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -17,20 +17,14 @@
     <AssemblyOriginatorKeyFile />
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Appccelerate.CheckHintPathTask" Version="1.15.0">
+    <PackageReference Include="Appccelerate.Development" Version="2.2.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Appccelerate.CheckNugetDependenciesTask" Version="1.13.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Appccelerate.Development" Version="1.14.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Appccelerate.Development.ProductionCode" Version="1.14.0">
+    <PackageReference Include="Appccelerate.Development.ProductionCode" Version="2.2.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Appccelerate.Fundamentals" Version="2.8.0" />
-    <PackageReference Include="Appccelerate.VersionTask" Version="1.17.0">
+    <PackageReference Include="Appccelerate.VersionTask" Version="1.39.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>

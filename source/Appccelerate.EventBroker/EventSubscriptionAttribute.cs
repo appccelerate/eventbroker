@@ -60,7 +60,7 @@ namespace Appccelerate.EventBroker
         /// <param name="matcherTypes">Type of the matchers used for this subscription.</param>
         public EventSubscriptionAttribute(string topic, Type handlerType, params Type[] matcherTypes)
         {
-            Ensure.ArgumentNotNullOrEmpty(topic, "topic");
+            Guard.AgainstNullOrEmpty(nameof(topic), topic);
 
             this.topic = topic;
             this.handlerType = handlerType;

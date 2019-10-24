@@ -21,13 +21,11 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
     using System;
     using System.Reflection;
 
-    using Appccelerate.Events;
-
     public class UnwrappedEventArgsOnlyDelegateWrapper<T> : DelegateWrapper
     {
         public UnwrappedEventArgsOnlyDelegateWrapper(Type eventArgsType, MethodInfo handlerMethod)
             : base(
-                eventArgsType, 
+                eventArgsType,
                 typeof(Action<T>),
                 handlerMethod)
         {

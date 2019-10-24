@@ -38,15 +38,15 @@ namespace Appccelerate.EventBroker.Matchers.Scope
         /// <returns><code>true</code> if event has to be sent to the subscriber.</returns>
         public bool Match(IPublication publication, ISubscription subscription, EventArgs e)
         {
-            Ensure.ArgumentNotNull(publication, "publication");
-            Ensure.ArgumentNotNull(subscription, "subscription");
+            Guard.AgainstNullArgument(nameof(publication), publication);
+            Guard.AgainstNullArgument(nameof(subscription), subscription);
 
             object publisher = publication.Publisher;
             object subscriber = subscription.Subscriber;
 
             string publisherName = publisher is INamedItem ? ((INamedItem)publisher).EventBrokerItemName : string.Empty;
             string subscriberName = subscriber is INamedItem ? ((INamedItem)subscriber).EventBrokerItemName : string.Empty;
-            
+
             return publisherName.StartsWith(subscriberName, StringComparison.Ordinal);
         }
 
@@ -56,7 +56,7 @@ namespace Appccelerate.EventBroker.Matchers.Scope
         /// <param name="writer">The writer the description is written to.</param>
         public void DescribeTo(System.IO.TextWriter writer)
         {
-            Ensure.ArgumentNotNull(writer, "writer");
+            Guard.AgainstNullArgument(nameof(writer), writer);
 
             writer.Write("publisher name starts with subscriber name");
         }

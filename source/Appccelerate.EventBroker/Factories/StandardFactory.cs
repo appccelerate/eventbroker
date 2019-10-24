@@ -46,7 +46,7 @@ namespace Appccelerate.EventBroker.Factories
         /// <param name="extensionHost">The extension host holding all extensions (this is the event broker).</param>
         public virtual void Initialize(IExtensionHost extensionHost)
         {
-            this.ExtensionHost = extensionHost;    
+            this.ExtensionHost = extensionHost;
         }
 
         /// <summary>
@@ -89,10 +89,10 @@ namespace Appccelerate.EventBroker.Factories
         /// <param name="publicationMatchers">The publication matchers.</param>
         /// <returns>A newly created publication</returns>
         public virtual IPublication CreatePublication(
-            IEventTopicExecuter eventTopic, 
-            object publisher, 
-            EventInfo eventInfo, 
-            HandlerRestriction handlerRestriction, 
+            IEventTopicExecuter eventTopic,
+            object publisher,
+            EventInfo eventInfo,
+            HandlerRestriction handlerRestriction,
             IList<IPublicationMatcher> publicationMatchers)
         {
             return new PropertyPublication(eventTopic, publisher, eventInfo, handlerRestriction, publicationMatchers);
@@ -153,7 +153,7 @@ namespace Appccelerate.EventBroker.Factories
         /// <returns>A new subscription execution handler.</returns>
         public virtual IHandler CreateHandler(Type handlerType)
         {
-            Ensure.ArgumentNotNull(handlerType, "handlerType");
+            Guard.AgainstNullArgument(nameof(handlerType), handlerType);
 
             AssertIsHandler(handlerType);
 
@@ -169,7 +169,7 @@ namespace Appccelerate.EventBroker.Factories
         /// </returns>
         public virtual IPublicationMatcher CreatePublicationMatcher(Type matcherType)
         {
-            Ensure.ArgumentNotNull(matcherType, "matcherType");
+            Guard.AgainstNullArgument(nameof(matcherType), matcherType);
 
             AssertIsPublicationMatcher(matcherType);
 
@@ -185,7 +185,7 @@ namespace Appccelerate.EventBroker.Factories
         /// </returns>
         public virtual ISubscriptionMatcher CreateSubscriptionMatcher(Type matcherType)
         {
-            Ensure.ArgumentNotNull(matcherType, "matcherType");
+            Guard.AgainstNullArgument(nameof(matcherType), matcherType);
 
             AssertIsSubscriptionMatcher(matcherType);
 
@@ -243,9 +243,9 @@ namespace Appccelerate.EventBroker.Factories
         }
 
         /// <summary>
-        /// Creates a new instance of a subscription matcher type. 
+        /// Creates a new instance of a subscription matcher type.
         /// </summary>
-        /// <remarks>Only called when subscription matcher assertions in 
+        /// <remarks>Only called when subscription matcher assertions in
         /// <see cref="AssertIsSubscriptionMatcher"/> were successful.</remarks>
         /// <param name="subscriptionMatcherType">The subscription matcher type.</param>
         /// <returns>A new instance of <paramref name="subscriptionMatcherType"/>.</returns>
@@ -255,9 +255,9 @@ namespace Appccelerate.EventBroker.Factories
         }
 
         /// <summary>
-        /// Creates a new instance of a publication matcher type. 
+        /// Creates a new instance of a publication matcher type.
         /// </summary>
-        /// <remarks>Only called when publication matcher assertions in 
+        /// <remarks>Only called when publication matcher assertions in
         /// <see cref="AssertIsPublicationMatcher"/> were successful.</remarks>
         /// <param name="publicationMatcherType">The publication matcher type.</param>
         /// <returns>A new instance of <paramref name="publicationMatcherType"/>.</returns>
@@ -267,9 +267,9 @@ namespace Appccelerate.EventBroker.Factories
         }
 
         /// <summary>
-        /// Creates a new instance of a handler type. 
+        /// Creates a new instance of a handler type.
         /// </summary>
-        /// <remarks>Only called when handler matcher assertions in 
+        /// <remarks>Only called when handler matcher assertions in
         /// <see cref="AssertIsHandler"/> were successful.</remarks>
         /// <param name="handlerType">The handler type.</param>
         /// <returns>A new instance of <paramref name="handlerType"/>.</returns>

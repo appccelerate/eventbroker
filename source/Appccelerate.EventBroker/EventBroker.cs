@@ -38,12 +38,12 @@ namespace Appccelerate.EventBroker
         /// The inspector used to find publications and subscription within a class.
         /// </summary>
         private readonly IEventInspector eventInspector;
-        
+
         /// <summary>
         /// The event topic host that holds all event topics of this event broker.
         /// </summary>
         private readonly IEventTopicHost eventTopicHost;
-        
+
         /// <summary>
         /// The factory used to create event broker related instances.
         /// </summary>
@@ -73,7 +73,7 @@ namespace Appccelerate.EventBroker
         /// <param name="factory">The factory.</param>
         public EventBroker(IFactory factory)
         {
-            Ensure.ArgumentNotNull(factory, "factory");
+            Guard.AgainstNullArgument(nameof(factory), factory);
 
             this.factory = factory;
 
@@ -113,7 +113,7 @@ namespace Appccelerate.EventBroker
         /// <param name="eventArgs">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         public void Fire(string topic, object publisher, HandlerRestriction handlerRestriction, object sender, EventArgs eventArgs)
         {
-            Ensure.ArgumentNotNull(eventArgs, "eventArgs");
+            Guard.AgainstNullArgument(nameof(eventArgs), eventArgs);
 
             IEventTopic eventTopic = this.eventTopicHost.GetEventTopic(topic);
             using (var spontaneousPublication = new SpontaneousPublication(eventTopic, publisher, eventArgs.GetType(), handlerRestriction, new List<IPublicationMatcher>()))

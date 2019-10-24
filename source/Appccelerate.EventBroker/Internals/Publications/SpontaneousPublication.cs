@@ -25,7 +25,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
     using Appccelerate.EventBroker.Matchers;
 
     /// <summary>
-    /// A spontaneous publication is used when there is no real publisher but 
+    /// A spontaneous publication is used when there is no real publisher but
     /// <see cref="EventBroker.Fire"/> was called directly to fire an event.
     /// </summary>
     internal class SpontaneousPublication : Publication
@@ -60,7 +60,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
 
         public override void DescribeTo(TextWriter writer)
         {
-            Ensure.ArgumentNotNull(writer, "writer");
+            Guard.AgainstNullArgument(nameof(writer), writer);
 
             writer.Write(", spontaneous publication");
         }

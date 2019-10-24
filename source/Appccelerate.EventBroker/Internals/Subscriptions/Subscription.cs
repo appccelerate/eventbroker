@@ -22,7 +22,6 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
     using System.Collections.Generic;
     using System.IO;
     using Appccelerate.EventBroker.Matchers;
-    using Appccelerate.Formatters;
 
     /// <summary>
     /// Represents a topic subscription.
@@ -33,7 +32,7 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
         private readonly IList<ISubscriptionMatcher> subscriptionMatchers;
         private readonly IHandler handler;
         private readonly IExtensionHost extensionHost;
-        
+
         private readonly DelegateWrapper delegateWrapper;
 
         public Subscription(
@@ -82,7 +81,7 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
 
         public void DescribeTo(TextWriter writer)
         {
-            Ensure.ArgumentNotNull(writer, "writer");
+            Guard.AgainstNullArgument(nameof(writer), writer);
 
             if (!this.subscriber.IsAlive)
             {
@@ -100,7 +99,7 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
 
             writer.Write(", Handler method = ");
             writer.Write(this.HandlerMethodName);
-                
+
             writer.Write(", Handler = ");
             writer.Write(this.handler.GetType().FullNameToString());
 

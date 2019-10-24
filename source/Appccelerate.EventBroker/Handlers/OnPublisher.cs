@@ -36,10 +36,10 @@ namespace Appccelerate.EventBroker.Handlers
         {
             get { return HandlerKind.Synchronous; }
         }
-        
+
         public override void Handle(IEventTopicInfo eventTopic, object subscriber, object sender, EventArgs e, IDelegateWrapper delegateWrapper)
         {
-            Ensure.ArgumentNotNull(delegateWrapper, "delegateWrapper");
+            Guard.AgainstNullArgument(nameof(delegateWrapper), delegateWrapper);
 
             try
             {

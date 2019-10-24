@@ -23,7 +23,6 @@ namespace Appccelerate.EventBroker.Internals.Publications
     using System.IO;
 
     using Appccelerate.EventBroker.Matchers;
-    using Appccelerate.Formatters;
 
     /// <summary>
     /// Represents a topic publication.
@@ -46,7 +45,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
             this.handlerRestriction = handlerRestriction;
             this.publicationMatchers = publicationMatchers;
         }
-        
+
         public object Publisher
         {
             get { return this.publisher.Target; }
@@ -78,7 +77,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
 
         public virtual void DescribeTo(TextWriter writer)
         {
-            Ensure.ArgumentNotNull(writer, "writer");
+            Guard.AgainstNullArgument(nameof(writer), writer);
 
             if (!this.publisher.IsAlive)
             {
@@ -92,7 +91,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
                 writer.Write(", Name = ");
                 writer.Write(((INamedItem)this.Publisher).EventBrokerItemName);
             }
-                
+
             writer.Write(", Event = ");
             writer.Write(this.EventName);
             writer.Write(", matchers = ");
@@ -102,7 +101,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
                 writer.Write(" ");
             }
         }
-        
+
         public void Dispose()
         {
             this.Dispose(true);

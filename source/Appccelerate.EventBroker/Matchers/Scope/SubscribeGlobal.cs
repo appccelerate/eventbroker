@@ -48,7 +48,7 @@ namespace Appccelerate.EventBroker.Matchers.Scope
         /// <param name="writer">The writer the description is written to.</param>
         public void DescribeTo(System.IO.TextWriter writer)
         {
-            Ensure.ArgumentNotNull(writer, "writer");
+            Guard.AgainstNullArgument(nameof(writer), writer);
 
             writer.Write("always");
         }
