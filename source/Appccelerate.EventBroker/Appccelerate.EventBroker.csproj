@@ -57,15 +57,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Appccelerate.Development" Version="2.2.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Appccelerate.Development.ProductionCode" Version="2.2.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Appccelerate.Development.ProductionCode.Signed" Version="2.2.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Appccelerate.VersionTask" Version="1.39.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
