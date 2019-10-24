@@ -55,7 +55,7 @@
   </PropertyGroup>
 
   <!-- versioning -->
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <PackageReference Include="MinVer" Version="1.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -63,7 +63,6 @@
   </ItemGroup>
   <PropertyGroup>
     <MinVerAutoIncrement>Minor</MinVerAutoIncrement>
-    <MinVerbosity>diagnostic</MinVerbosity>
   </PropertyGroup>
 
   <!-- license -->
