@@ -35,4 +35,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Appccelerate.EventBroker\Appccelerate.EventBroker.csproj" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>../Analyzers.Specs.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
 </Project>
