@@ -108,3 +108,7 @@ Backup*/
 UpgradeLog*.XML
 
 Specs
+
+source/.idea/.idea.Appccelerate.EventBroker/.idea/
+
+source/.idea/.idea.Appccelerate.EventBroker/riderModule.iml
