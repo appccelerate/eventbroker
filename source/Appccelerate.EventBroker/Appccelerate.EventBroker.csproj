@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net47;netstandard2</TargetFrameworks>
+    <TargetFrameworks>net47;netstandard2.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
@@ -12,9 +12,50 @@
     <DocumentationFile>bin\$(Configuration)\Appccelerate.EventBroker.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
+
+  <!-- nuget package -->
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile />
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/appccelerate/eventbroker</RepositoryUrl>
+    <PackageIconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</PackageIconUrl>
+    <description>
+      Notification component for synchronous and asynchronous loosely coupled notification with automatic thread switching:
+      synchronous and asynchronous notification,
+      automatic thread switching: to background or UI thread,
+      loose coupling of event topic publishers and subscribers,
+      publishers and subscribers are referenced by weak references and can therefore be garbage collected
+      multiple publishers and/or subscribers for a single event topic,
+      matchers for publications and subscriptions,
+      thorough customizable logging,
+      extension support.
+    </description>
+    <PackageReleaseNotes>
+      Supports not .NET Standard 2.0
+      
+      Fixed missing call to base.Initialize in OnUserInterface and OnUserInterfaceAsync handlers resulting in NullReferenceExceptions on ExtensionHost.
+    </PackageReleaseNotes>
+    <PackageTags>Appccelerate eventbroker</PackageTags>
   </PropertyGroup>
+
+  <!-- nuget symbol package -->
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <!-- strong name signing -->
+  <PropertyGroup>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>Appccelerate.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>False</DelaySign>
+  </PropertyGroup>
+
+  <!-- Stylecop / Analyzers -->
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>../Analyzers.Productive.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="Appccelerate.Development" Version="2.2.0">
       <PrivateAssets>all</PrivateAssets>
@@ -33,8 +74,4 @@
     <None Include="Appccelerate.Public.snk" />
     <None Include="Appccelerate.snk" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <CodeAnalysisRuleSet>../Analyzers.Productive.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
 </Project>
