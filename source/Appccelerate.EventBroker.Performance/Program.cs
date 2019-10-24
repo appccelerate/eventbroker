@@ -29,7 +29,8 @@ namespace Appccelerate.EventBroker
             var numberOfEvents = int.Parse(args.Length > 1 ? args[1] : "10000");
             var numberOfSubscribers = int.Parse(args.Length > 2 ? args[2] : "2");
             
-            Console.WriteLine(string.Format("running {0} runs with {1} events and max {2} subscribers", numberOfRuns, numberOfEvents, numberOfSubscribers));
+            Console.WriteLine(
+                $"running {numberOfRuns} runs with {numberOfEvents} events and max {numberOfSubscribers} subscribers");
             Console.WriteLine();
 
             var runner = new Runner(numberOfRuns, numberOfEvents, numberOfSubscribers);

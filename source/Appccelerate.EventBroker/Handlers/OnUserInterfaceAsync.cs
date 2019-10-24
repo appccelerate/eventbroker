@@ -37,10 +37,7 @@ namespace Appccelerate.EventBroker.Handlers
         /// Gets the kind of the handler, whether it is a synchronous or asynchronous handler.
         /// </summary>
         /// <value>The kind of the handler (synchronous or asynchronous).</value>
-        public override HandlerKind Kind
-        {
-            get { return HandlerKind.Asynchronous; }
-        }
+        public override HandlerKind Kind => HandlerKind.Asynchronous;
 
         /// <summary>
         /// Initializes the handler with the synchronization context for the user interface thread, which has to be the currently running process.

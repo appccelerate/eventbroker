@@ -86,10 +86,7 @@ namespace Appccelerate.EventBroker
             this.registrar = this.factory.CreateRegistrar(this.eventTopicHost, this.eventInspector, this);
         }
 
-        public IRegistrar SpecialCasesRegistrar
-        {
-            get { return this.registrar; }
-        }
+        public IRegistrar SpecialCasesRegistrar => this.registrar;
 
         public void Register(object item)
         {

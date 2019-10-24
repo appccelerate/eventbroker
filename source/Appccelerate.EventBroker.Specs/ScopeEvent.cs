@@ -44,13 +44,7 @@ namespace Appccelerate.EventBroker
             [EventPublication(EventTopic, typeof(PublishToChildren))]
             public event EventHandler EventFiredToChildrenAndSiblings;
 
-            public string EventBrokerItemName
-            {
-                get
-                {
-                    return this.name;
-                }
-            }
+            public string EventBrokerItemName => this.name;
 
             public void FireEventGlobally()
             {
@@ -83,13 +77,7 @@ namespace Appccelerate.EventBroker
 
             public bool CalledFromChild { get; set; }
 
-            public string EventBrokerItemName
-            {
-                get
-                {
-                    return this.name;
-                }
-            }
+            public string EventBrokerItemName => this.name;
 
             [EventSubscription(EventTopic, typeof(Handlers.OnPublisher))]
             public void GlobalHandler(object sender, EventArgs e)

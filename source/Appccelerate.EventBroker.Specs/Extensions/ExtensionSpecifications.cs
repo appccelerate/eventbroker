@@ -218,10 +218,7 @@ namespace Appccelerate.EventBroker.Extensions
         {
             private readonly StringBuilder log = new StringBuilder();
 
-            public string Log
-            {
-                get { return this.log.ToString(); }
-            }
+            public string Log => this.log.ToString();
 
             public void FiringEvent(IEventTopicInfo eventTopic, IPublication publication, object sender, EventArgs e)
             {

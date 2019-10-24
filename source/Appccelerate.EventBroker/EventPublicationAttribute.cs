@@ -93,28 +93,19 @@ namespace Appccelerate.EventBroker
         /// Gets the topic URI.
         /// </summary>
         /// <value>The topic URI.</value>
-        public string Topic
-        {
-            get { return this.topic; }
-        }
+        public string Topic => this.topic;
 
         /// <summary>
         /// Gets the types of the matchers.
         /// </summary>
         /// <value>The types of the matchers.</value>
-        public IEnumerable<Type> MatcherTypes
-        {
-            get { return this.matcherTypes; }
-        }
+        public IEnumerable<Type> MatcherTypes => this.matcherTypes;
 
         /// <summary>
         /// Gets the handler restriction this publication has for its subscribers. Whether all (null),
         /// only synchronous or asynchronous handling is allowed.
         /// </summary>
         /// <value>The handler restriction.</value>
-        public HandlerRestriction HandlerRestriction
-        {
-            get { return this.handlerRestriction; }
-        }
+        public HandlerRestriction HandlerRestriction => this.handlerRestriction;
     }
 }

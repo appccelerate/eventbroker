@@ -74,27 +74,18 @@ namespace Appccelerate.EventBroker
         /// <summary>
         /// Gets the name of the <see cref="IEventTopic"/> the decorated method is subscribed to.
         /// </summary>
-        public string Topic
-        {
-            get { return this.topic; }
-        }
+        public string Topic => this.topic;
 
         /// <summary>
         /// Gets the type of the subscription execution handler.
         /// </summary>
         /// <value>The type of the subscription execution handler.</value>
-        public Type HandlerType
-        {
-            get { return this.handlerType; }
-        }
+        public Type HandlerType => this.handlerType;
 
         /// <summary>
         /// Gets the types of the matchers.
         /// </summary>
         /// <value>The types of the matchers.</value>
-        public IEnumerable<Type> MatcherTypes
-        {
-            get { return this.matcherTypes; }
-        }
+        public IEnumerable<Type> MatcherTypes => this.matcherTypes;
     }
 }

@@ -171,10 +171,7 @@ namespace Appccelerate.EventBroker.Description
             [EventPublication("topic://SimpleEvent", typeof(PublishToChildren))]
             public event EventHandler SimpleEvent;
 
-            public string EventBrokerItemName
-            {
-                get { return "NamedCustomEventPublisherName"; }
-            }
+            public string EventBrokerItemName => "NamedCustomEventPublisherName";
 
             public void FireSimpleEvent()
             {
@@ -192,10 +189,7 @@ namespace Appccelerate.EventBroker.Description
 
         public class NamedSubscriber : INamedItem
         {
-            public string EventBrokerItemName
-            {
-                get { return "NamedSubscriberName"; }
-            }
+            public string EventBrokerItemName => "NamedSubscriberName";
 
             [EventSubscription("topic://CustomEvent", typeof(Handlers.OnPublisher))]
             public void HandleCustomEvent(object sender, CustomEventArgs e)

@@ -40,23 +40,11 @@ namespace Appccelerate.EventBroker.Internals.Publications
             this.eventArgsType = eventArgsType;
         }
 
-        public override string EventName
-        {
-            get { return SpontaneousEventName; }
-        }
+        public override string EventName => SpontaneousEventName;
 
-        public override Type EventArgsType
-        {
-            get
-            {
-                return this.eventArgsType;
-            }
-        }
+        public override Type EventArgsType => this.eventArgsType;
 
-        public override bool AllowsMultipleRegistrationsOnSamePublisher
-        {
-            get { return true; }
-        }
+        public override bool AllowsMultipleRegistrationsOnSamePublisher => true;
 
         public override void DescribeTo(TextWriter writer)
         {

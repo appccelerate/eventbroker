@@ -68,15 +68,9 @@ namespace Appccelerate.EventBroker.Internals.Publications
             this.eventInfo.AddEventHandler(publisher, handler);
         }
 
-        public override string EventName
-        {
-            get { return this.eventInfo.Name; }
-        }
+        public override string EventName => this.eventInfo.Name;
 
-        public override Type EventArgsType
-        {
-            get { return this.eventArgsType; }
-        }
+        public override Type EventArgsType => this.eventArgsType;
 
         public void PublicationHandler(object sender, EventArgs e)
         {

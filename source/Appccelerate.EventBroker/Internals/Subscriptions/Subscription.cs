@@ -49,30 +49,15 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
             this.extensionHost = extensionHost;
         }
 
-        public Type EventArgsType
-        {
-            get { return this.delegateWrapper.EventArgsType; }
-        }
+        public Type EventArgsType => this.delegateWrapper.EventArgsType;
 
-        public object Subscriber
-        {
-            get { return this.subscriber.Target; }
-        }
+        public object Subscriber => this.subscriber.Target;
 
-        public string HandlerMethodName
-        {
-            get { return this.delegateWrapper.HandlerMethod.Name; }
-        }
+        public string HandlerMethodName => this.delegateWrapper.HandlerMethod.Name;
 
-        public IHandler Handler
-        {
-            get { return this.handler; }
-        }
+        public IHandler Handler => this.handler;
 
-        public IList<ISubscriptionMatcher> SubscriptionMatchers
-        {
-            get { return this.subscriptionMatchers; }
-        }
+        public IList<ISubscriptionMatcher> SubscriptionMatchers => this.subscriptionMatchers;
 
         public EventTopicFireDelegate GetHandler()
         {

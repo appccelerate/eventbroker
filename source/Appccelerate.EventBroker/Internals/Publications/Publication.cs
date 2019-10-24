@@ -46,34 +46,19 @@ namespace Appccelerate.EventBroker.Internals.Publications
             this.publicationMatchers = publicationMatchers;
         }
 
-        public object Publisher
-        {
-            get { return this.publisher.Target; }
-        }
+        public object Publisher => this.publisher.Target;
 
         public abstract string EventName { get; }
 
-        public HandlerRestriction HandlerRestriction
-        {
-            get { return this.handlerRestriction; }
-        }
+        public HandlerRestriction HandlerRestriction => this.handlerRestriction;
 
-        public IList<IPublicationMatcher> PublicationMatchers
-        {
-            get { return this.publicationMatchers; }
-        }
+        public IList<IPublicationMatcher> PublicationMatchers => this.publicationMatchers;
 
         public abstract Type EventArgsType { get; }
 
-        public virtual bool AllowsMultipleRegistrationsOnSamePublisher
-        {
-            get { return false; }
-        }
+        public virtual bool AllowsMultipleRegistrationsOnSamePublisher => false;
 
-        protected bool IsPublisherAlive
-        {
-            get { return this.publisher.IsAlive;  }
-        }
+        protected bool IsPublisherAlive => this.publisher.IsAlive;
 
         public virtual void DescribeTo(TextWriter writer)
         {

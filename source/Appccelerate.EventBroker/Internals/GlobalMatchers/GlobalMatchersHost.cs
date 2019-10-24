@@ -33,13 +33,7 @@ namespace Appccelerate.EventBroker.Internals.GlobalMatchers
         /// Gets the matchers.
         /// </summary>
         /// <value>The matchers.</value>
-        public IEnumerable<IMatcher> Matchers
-        {
-            get
-            {
-                return this.matchers;
-            }
-        }
+        public IEnumerable<IMatcher> Matchers => this.matchers;
 
         /// <summary>
         /// Adds the matcher.
