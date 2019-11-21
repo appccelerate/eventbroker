@@ -28,16 +28,19 @@ namespace Appccelerate.EventBroker.EventBrokerRegisterables
             EventBroker eventBroker,
             Registerable registerable)
         {
-            "Given an event broker".x(() => eventBroker = new EventBroker());
+            "Given an event broker".x(() =>
+                eventBroker = new EventBroker());
 
-            "And a registerable".x(() => registerable = new Registerable());
+            "And a registerable".x(() =>
+                registerable = new Registerable());
 
             "When register".x(() =>
             {
                 eventBroker.Register(registerable);
             });
 
-            "It should have registered the registerable".x(() => registerable.WasRegistered
+            "It should have registered the registerable".x(() =>
+                registerable.WasRegistered
                 .Should().BeTrue("register should be called"));
         }
 
@@ -46,9 +49,11 @@ namespace Appccelerate.EventBroker.EventBrokerRegisterables
             EventBroker eventBroker,
             Registerable registerable)
         {
-            "Given an event broker".x(() => eventBroker = new EventBroker());
+            "Given an event broker".x(() =>
+                eventBroker = new EventBroker());
 
-            "And a registerable".x(() => registerable = new Registerable());
+            "And a registerable".x(() =>
+                registerable = new Registerable());
 
             "When unregister".x(() =>
             {
@@ -66,15 +71,11 @@ namespace Appccelerate.EventBroker.EventBrokerRegisterables
 
             public bool WasUnregistered { get; private set; }
 
-            public void Register(IEventRegistrar eventRegistrar)
-            {
+            public void Register(IEventRegistrar eventRegistrar) =>
                 this.WasRegistered = true;
-            }
 
-            public void Unregister(IEventRegistrar eventRegistrar)
-            {
+            public void Unregister(IEventRegistrar eventRegistrar) =>
                 this.WasUnregistered = true;
-            }
         }
     }
 }

@@ -28,8 +28,8 @@ namespace Appccelerate.EventBroker.Description
 
     public class DescribeToSpecifications
     {
-        const string SimpleEventTopic = "topic://SimpleEvent";
-        const string CustomEventTopic = "topic://CustomEvent";
+        private const string SimpleEventTopic = "topic://SimpleEvent";
+        private const string CustomEventTopic = "topic://CustomEvent";
 
         [Scenario]
         public void Describe(EventBroker eventBroker, StringWriter writer, string description)
@@ -139,7 +139,7 @@ namespace Appccelerate.EventBroker.Description
                     "*EventArgs type = Appccelerate.EventBroker.Description.DescribeToSpecifications+CustomEventArgs, *"));
         }
 
-        public class Publisher
+        private class Publisher
         {
             [EventPublication(SimpleEventTopic)]
             public event EventHandler SimpleEvent;
@@ -147,31 +147,25 @@ namespace Appccelerate.EventBroker.Description
             [EventPublication(CustomEventTopic)]
             public event EventHandler<CustomEventArgs> CustomEvent;
 
-            public void FireSimpleEvent()
-            {
+            public void FireSimpleEvent() =>
                 this.SimpleEvent?.Invoke(this, EventArgs.Empty);
-            }
 
-            public void FireCustomEvent()
-            {
+            public void FireCustomEvent() =>
                 this.CustomEvent?.Invoke(this, null);
-            }
         }
 
-        public class NamedPublisher : INamedItem
+        private class NamedPublisher : INamedItem
         {
             [EventPublication("topic://SimpleEvent", typeof(PublishToChildren))]
             public event EventHandler SimpleEvent;
 
             public string EventBrokerItemName => "NamedCustomEventPublisherName";
 
-            public void FireSimpleEvent()
-            {
+            public void FireSimpleEvent() =>
                 this.SimpleEvent?.Invoke(this, EventArgs.Empty);
-            }
         }
 
-        public class Subscriber
+        private class Subscriber
         {
             [EventSubscription("topic://SimpleEvent", typeof(Handlers.OnPublisher), typeof(SubscribeGlobal))]
             public void HandleSimpleEvent(object sender, EventArgs e)
@@ -179,7 +173,7 @@ namespace Appccelerate.EventBroker.Description
             }
         }
 
-        public class NamedSubscriber : INamedItem
+        private class NamedSubscriber : INamedItem
         {
             public string EventBrokerItemName => "NamedSubscriberName";
 
@@ -189,14 +183,12 @@ namespace Appccelerate.EventBroker.Description
             }
         }
 
-        public class CustomEventArgs : EventArgs
+        private class CustomEventArgs : EventArgs
         {
             public int I { get; } = 5;
 
-            public override string ToString()
-            {
-                return this.I.ToString(CultureInfo.InvariantCulture);
-            }
+            public override string ToString() =>
+                this.I.ToString(CultureInfo.InvariantCulture);
         }
     }
 }
