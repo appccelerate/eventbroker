@@ -23,44 +23,72 @@ namespace Appccelerate.EventBroker.Registration.Subscribers
     using Appccelerate.EventBroker.Handlers;
     using Appccelerate.Events;
     using FluentAssertions;
-    using Machine.Specifications;
     using Machine.Specifications.Annotations;
+    using Xbehave;
 
-    [Subject(Subscribers.RegisteringHandlerMethods)]
-    public class When_defining_a_handler_method_with_sender_and_custom_event_argument_using_registration_by_attribute
+    public class SubscribersWithSenderAndCustomEventArgsSpecifications
     {
-        static readonly EventArgs<string> EventArgs = new EventArgs<string>("test"); 
+        private readonly EventArgs<string> eventArgs = new EventArgs<string>("test");
 
-        static EventBroker eventBroker;
-        static CustomEvent.EventPublisher publisher;
-        static SubscriberWithSenderAndCustomEventArgs subscriber;
+        private EventBroker eventBroker;
+        private CustomEvent.EventPublisher publisher;
 
-        Establish context = () =>
+        [Background]
+        public void SetupEventBroker()
+        {
+            "Establish an event broker".x(() =>
+                this.eventBroker = new EventBroker());
+
+            "Establish an registered publisher".x(() =>
             {
-                publisher = new CustomEvent.EventPublisher();
-                subscriber = new SubscriberWithSenderAndCustomEventArgs();
+                this.publisher = new CustomEvent.EventPublisher();
+                this.eventBroker.Register(this.publisher);
+            });
+        }
 
-                eventBroker = new EventBroker();
+        [Scenario]
+        public void RegisterUnregister(
+            SubscriberWithSenderAndCustomEventArgs subscriber)
+        {
+            "Establish a subscriber".x(() =>
+                subscriber = new SubscriberWithSenderAndCustomEventArgs());
 
-                eventBroker.Register(publisher);
-            };
-
-        Because of = () =>
+            "When registering, firing an event, unregistering and firing another event".x(() =>
             {
-                eventBroker.Register(subscriber);
+                this.eventBroker.Register(subscriber);
+                this.publisher.FireEvent(this.eventArgs);
+                this.eventBroker.Unregister(subscriber);
+                this.publisher.FireEvent(this.eventArgs);
+            });
 
-                publisher.FireEvent(EventArgs);
+            "It should call the handler method on the subscriber with generic event arguments from the publisher".x(() =>
+                subscriber.ReceivedEventArgValues.Should().Contain(this.eventArgs));
 
-                eventBroker.Unregister(subscriber);
+            "It should call the handler method only as long as the subscriber is registered".x(() =>
+                subscriber.ReceivedEventArgValues.Should().HaveCount(1, "event should not be routed anymore after subscriber is unregistered."));
+        }
 
-                publisher.FireEvent(EventArgs);
-            };
+        [Scenario]
+        public void RegisterUnregisterWithoutAttribute(
+            SubscriberWithoutRegistrationAttributeButWithSenderAndCustomEventArgs subscriber)
+        {
+            "Establish a subscriber".x(() =>
+                subscriber = new SubscriberWithoutRegistrationAttributeButWithSenderAndCustomEventArgs());
 
-        It should_call_handler_method_on_subscriber_with_value_of_generic_event_arguments_from_publisher = () =>
-            subscriber.ReceivedEventArgValues.Should().Contain(EventArgs);
+            "When registering, firing an event, unregistering and firing another event".x(() =>
+            {
+                this.eventBroker.SpecialCasesRegistrar.AddSubscription<EventArgs<string>>(CustomEvent.EventTopic, subscriber, subscriber.Handle, new OnPublisher());
+                this.publisher.FireEvent(this.eventArgs);
+                this.eventBroker.SpecialCasesRegistrar.RemoveSubscription<EventArgs<string>>(CustomEvent.EventTopic, subscriber, subscriber.Handle);
+                this.publisher.FireEvent(this.eventArgs);
+            });
 
-        It should_call_handler_method_only_as_long_as_subscriber_is_registered = () =>
-            subscriber.ReceivedEventArgValues.Should().HaveCount(1, "event should not be routed anymore after subscriber is unregistered.");
+            "It should call the handler method on the subscriber with generic event arguments from the publisher".x(() =>
+                subscriber.ReceivedEventArgValues.Should().Contain(this.eventArgs));
+
+            "It should call the handler method only as long as the subscriber is registered".x(() =>
+                subscriber.ReceivedEventArgValues.Should().HaveCount(1, "event should not be routed anymore after subscriber is unregistered."));
+        }
 
         public class SubscriberWithSenderAndCustomEventArgs : SubscriberWithSenderAndCustomEventArgsBase
         {
@@ -70,60 +98,23 @@ namespace Appccelerate.EventBroker.Registration.Subscribers
                 this.ReceivedEventArgValues.Add(eventArgs);
             }
         }
-    }
 
-    [Subject(Subscribers.RegisteringHandlerMethods)]
-    public class When_defining_a_handler_method_with_sender_and_custom_event_argument_using_registration_by_registrar
-    {
-        static readonly EventArgs<string> EventArgs = new EventArgs<string>("test"); 
-
-        static EventBroker eventBroker;
-        static CustomEvent.EventPublisher publisher;
-        static SubscriberWithSenderAndCustomEventArgs subscriber;
-
-        Establish context = () =>
-        {
-            publisher = new CustomEvent.EventPublisher();
-            subscriber = new SubscriberWithSenderAndCustomEventArgs();
-
-            eventBroker = new EventBroker();
-
-            eventBroker.Register(publisher);
-        };
-
-        Because of = () =>
-        {
-            eventBroker.SpecialCasesRegistrar.AddSubscription<EventArgs<string>>(CustomEvent.EventTopic, subscriber, subscriber.Handle, new OnPublisher());
-
-            publisher.FireEvent(EventArgs);
-
-            eventBroker.SpecialCasesRegistrar.RemoveSubscription<EventArgs<string>>(CustomEvent.EventTopic, subscriber, subscriber.Handle);
-
-            publisher.FireEvent(EventArgs);
-        };
-
-        It should_call_handler_method_on_subscriber_with_value_of_generic_event_arguments_from_publisher = () =>
-            subscriber.ReceivedEventArgValues.Should().Contain(EventArgs);
-
-        It should_call_handler_method_only_as_long_as_subscriber_is_registered = () =>
-            subscriber.ReceivedEventArgValues.Should().HaveCount(1, "event should not be routed anymore after subscriber is unregistered.");
-
-        public class SubscriberWithSenderAndCustomEventArgs : SubscriberWithSenderAndCustomEventArgsBase
+        public class SubscriberWithoutRegistrationAttributeButWithSenderAndCustomEventArgs : SubscriberWithSenderAndCustomEventArgsBase
         {
             public void Handle(object sender, EventArgs<string> eventArgs)
             {
                 this.ReceivedEventArgValues.Add(eventArgs);
             }
         }
-    }
 
-    public class SubscriberWithSenderAndCustomEventArgsBase
-    {
-        protected SubscriberWithSenderAndCustomEventArgsBase()
+        public class SubscriberWithSenderAndCustomEventArgsBase
         {
-            this.ReceivedEventArgValues = new List<EventArgs>();
-        }
+            protected SubscriberWithSenderAndCustomEventArgsBase()
+            {
+                this.ReceivedEventArgValues = new List<EventArgs>();
+            }
 
-        public List<EventArgs> ReceivedEventArgValues { get; private set; }
+            public List<EventArgs> ReceivedEventArgValues { get; private set; }
+        }
     }
 }
