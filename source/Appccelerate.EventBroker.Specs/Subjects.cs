@@ -20,12 +20,6 @@ namespace Appccelerate.EventBroker
 {
     public static class Subjects
     {
-        public const string Exceptions = "Exceptions";
-
-        public const string Scope = "Scope matchers";
-
         public const string Events = "Events";
-
-        public const string Cleanup = "Clean-up";
     }
 }
