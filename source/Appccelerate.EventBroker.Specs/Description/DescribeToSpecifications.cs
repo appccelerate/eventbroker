@@ -16,33 +16,27 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
+using Xbehave;
+
 namespace Appccelerate.EventBroker.Description
 {
     using System;
     using System.Globalization;
     using System.IO;
-
     using Appccelerate.EventBroker.Matchers.Scope;
-
     using FluentAssertions;
 
-    using Machine.Specifications;
-
-    [Subject(Subjects.Description)]
-    public class When_describing_an_event_broker
+    public class DescribeToSpecifications
     {
         const string SimpleEventTopic = "topic://SimpleEvent";
         const string CustomEventTopic = "topic://CustomEvent";
 
-        static EventBroker eventBroker;
-        static StringWriter writer;
-        static string description;
-
-        Establish context = () =>
+        [Scenario]
+        public void Describe(EventBroker eventBroker, StringWriter writer, string description)
+        {
+            "Establish an event broker with publisher and subscriber".x(() =>
             {
                 eventBroker = new EventBroker();
-
-                writer = new StringWriter();
 
                 var publisher = new Publisher();
                 var namedPublisher = new NamedPublisher();
@@ -53,99 +47,97 @@ namespace Appccelerate.EventBroker.Description
                 eventBroker.Register(namedPublisher);
                 eventBroker.Register(subscriber);
                 eventBroker.Register(namedSubscriber);
-            };
+            });
 
-        Because of = () =>
+            "Establish a string writer".x(() =>
+                writer = new StringWriter());
+
+            "When writing description to".x(() =>
             {
                 eventBroker.DescribeTo(writer);
                 description = writer.ToString();
-            };
+            });
 
-        It should_list_all_event_topics = () =>
-            description
-                .Should().Contain(SimpleEventTopic)
-                .And.Contain(CustomEventTopic);
+            "It should lists all event topics".x(() =>
+                description
+                    .Should().Contain(SimpleEventTopic)
+                    .And.Contain(CustomEventTopic));
 
-        It should_list_all_publishers_per_event_topic = () =>
-            description
-                .Should().Match("*" + SimpleEventTopic + "*" + typeof(Publisher) + "*" + CustomEventTopic + "*")
-                .And.Match("*" + SimpleEventTopic + "*" + typeof(NamedPublisher) + "*" + CustomEventTopic + "*")
-                .And.Match("*" + CustomEventTopic + "*" + typeof(Publisher) + "*");
+            "it should lists all publishers per event topics".x(() =>
+                description
+                    .Should().Match("*" + SimpleEventTopic + "*" + typeof(Publisher) + "*" + CustomEventTopic + "*")
+                    .And.Match("*" + SimpleEventTopic + "*" + typeof(NamedPublisher) + "*" + CustomEventTopic + "*")
+                    .And.Match("*" + CustomEventTopic + "*" + typeof(Publisher) + "*"));
 
-        It should_list_all_subscribers_per_event_topic = () =>
-            description
-                .Should().Match("*" + SimpleEventTopic + "*" + typeof(Subscriber) + "*" + CustomEventTopic + "*")
-                .And.Match("*" + CustomEventTopic + "*" + typeof(NamedSubscriber) + "*");
+            "It should lists all subscribers per event topic".x(() =>
+                    description
+                    .Should().Match("*" + SimpleEventTopic + "*" + typeof(Subscriber) + "*" + CustomEventTopic + "*")
+                    .And.Match("*" + CustomEventTopic + "*" + typeof(NamedSubscriber) + "*"));
 
-        It should_list_event_name_per_publisher = () =>
-            description
-                .Should().Match(
-                    "*" + 
-                    typeof(Publisher) + 
-                    "*Event = SimpleEvent*" +
-                    typeof(NamedPublisher) + 
-                    "*Event = SimpleEvent*" +
-                    typeof(Publisher) + 
-                    "*Event = CustomEvent*");
-
-        It should_list_event_handler_type_per_publisher = () =>
-            description
+            "It should list the event name per publisher".x(() =>
+                description
                 .Should().Match(
                     "*" +
                     typeof(Publisher) +
-                    "*EventHandler type = System.EventHandler*" +
+                    "*Event = SimpleEvent*" +
                     typeof(NamedPublisher) +
-                    "*EventHandler type = System.EventHandler*" +
+                    "*Event = SimpleEvent*" +
                     typeof(Publisher) +
-                    "*EventHandler type = System.EventHandler<Appccelerate.EventBroker.Description.When_describing_an_event_broker+CustomEventArgs>*");
+                    "*Event = CustomEvent*"));
 
-        It should_list_matchers_per_publisher_and_subscriber = () =>
-            description
-                .Should().Match(
-                    "*" +
-                    typeof(NamedPublisher) +
-                    "*matchers = subscriber name starts with publisher name*" +
-                    typeof(Subscriber) +
-                    "*matchers = always*");
+            "It should list event handler type per publisher".x(() =>
+                description
+                    .Should().Match(
+                        "*" +
+                        typeof(Publisher) +
+                        "*EventHandler type = System.EventHandler*" +
+                        typeof(NamedPublisher) +
+                        "*EventHandler type = System.EventHandler*" +
+                        typeof(Publisher) +
+                        "*EventHandler type = System.EventHandler<Appccelerate.EventBroker.Description.DescribeToSpecifications+CustomEventArgs>*"));
 
-        It should_list_name_of_named_publishers_and_subscribers = () =>
-            description
-                .Should().Match(
-                    "*" +
-                    typeof(NamedPublisher) +
-                    "*Name = NamedCustomEventPublisherName*" +
-                    typeof(NamedSubscriber) +
-                    "*Name = NamedSubscriberName*");
+            "It should list matchers per publisher and subscriber".x(() =>
+                description
+                    .Should().Match(
+                        "*" +
+                        typeof(NamedPublisher) +
+                        "*matchers = subscriber name starts with publisher name*" +
+                        typeof(Subscriber) +
+                        "*matchers = always*"));
 
-        It should_list_handler_method_per_subscriber = () =>
-            description
+            "It should list the name of named publishers and subscribers".x(() =>
+                description
+                    .Should().Match(
+                        "*" +
+                        typeof(NamedPublisher) +
+                        "*Name = NamedCustomEventPublisherName*" +
+                        typeof(NamedSubscriber) +
+                        "*Name = NamedSubscriberName*"));
+
+            "And it lists handler method per subscriber".x(() => description
                 .Should().Match(
                     "*" +
                     typeof(Subscriber) +
                     "*Handler method = HandleSimpleEvent*" +
                     typeof(NamedSubscriber) +
-                    "*Handler method = HandleCustomEvent*");
+                    "*Handler method = HandleCustomEvent*"));
 
-        It should_list_handler_type_per_subscriber = () =>
-            description
+            "And it lists handler type per subscriber".x(() => description
                 .Should().Match(
                     "*" +
                     typeof(Subscriber) +
                     "*Handler = Appccelerate.EventBroker.Handlers.OnPublisher*" +
                     typeof(NamedSubscriber) +
-                    "*Handler = Appccelerate.EventBroker.Handlers.OnPublisher*");
+                    "*Handler = Appccelerate.EventBroker.Handlers.OnPublisher*"));
 
-        It should_list_event_args_type_per_subscriber = () =>
-            description
+            "And it lists event args type per subscriber".x(() => description
                 .Should().Match(
                     "*" +
                     typeof(Subscriber) +
                     "*EventArgs type = System.EventArgs*" +
                     typeof(NamedSubscriber) +
-                    "*EventArgs type = Appccelerate.EventBroker.Description.When_describing_an_event_broker+CustomEventArgs, *");
-        
-        Cleanup stuff = () =>
-            writer.Dispose();
+                    "*EventArgs type = Appccelerate.EventBroker.Description.DescribeToSpecifications+CustomEventArgs, *"));
+        }
 
         public class Publisher
         {
@@ -157,12 +149,12 @@ namespace Appccelerate.EventBroker.Description
 
             public void FireSimpleEvent()
             {
-                this.SimpleEvent(this, EventArgs.Empty);
+                this.SimpleEvent?.Invoke(this, EventArgs.Empty);
             }
 
             public void FireCustomEvent()
             {
-                this.CustomEvent(this, null);
+                this.CustomEvent?.Invoke(this, null);
             }
         }
 
@@ -175,7 +167,7 @@ namespace Appccelerate.EventBroker.Description
 
             public void FireSimpleEvent()
             {
-                this.SimpleEvent(this, EventArgs.Empty);
+                this.SimpleEvent?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -199,7 +191,7 @@ namespace Appccelerate.EventBroker.Description
 
         public class CustomEventArgs : EventArgs
         {
-            public int I { get; set; }
+            public int I { get; } = 5;
 
             public override string ToString()
             {
