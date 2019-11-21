@@ -19,51 +19,179 @@
 namespace Appccelerate.EventBroker.Registration
 {
     using System;
-
+    using System.Threading;
     using Appccelerate.EventBroker.Handlers;
     using Appccelerate.EventBroker.Internals.Exceptions;
     using Appccelerate.Events;
-
     using FluentAssertions;
-
     using Machine.Specifications;
+    using Xbehave;
 
-    public class When_registering_a_publisher_with_multiple_publications_on_same_event_topic : ExceptionsSpecification
+    public class RegistrationExceptionsSpecifications
     {
-        static Exception exception;
+        [Scenario]
+        public void MultipleRegistrationOnSameTopic(
+            EventBroker eventBroker,
+            Exception exception)
+        {
+            "Establish an event broker".x(() =>
+                eventBroker = new EventBroker());
 
-        Because of = () =>
-            exception = Catch.Exception(() => 
-                eventBroker.Register(new InvalidPublisherWithRepeatedEventPublication()));
+            "When registering an invalid publisher with multiple publications on same event topic".x(() =>
+                exception = Catch.Exception(() =>
+                    eventBroker.Register(new InvalidPublisherWithRepeatedEventPublication())));
 
-        It should_throw_exception = () =>
-            exception
-                .Should().NotBeNull()
-                .And.BeOfType<RepeatedPublicationException>();
+            "It should throw an exception".x(() =>
+                exception
+                    .Should().NotBeNull()
+                    .And.BeOfType<RepeatedPublicationException>());
+        }
 
-        public class InvalidPublisherWithRepeatedEventPublication
+        [Scenario]
+        public void PublisherRegistrationWithInvalidEventSignature(
+            EventBroker eventBroker,
+            Exception exception)
+        {
+            "Establish an event broker".x(() =>
+                eventBroker = new EventBroker());
+
+            "When registering an invalid publisher with invalid event signature".x(() =>
+                exception = Catch.Exception(() =>
+                    eventBroker.Register(new InvalidPublisherWithWrongEventSignature())));
+
+            "It should throw an exception".x(() =>
+                exception
+                    .Should().NotBeNull()
+                    .And.BeOfType<InvalidPublicationSignatureException>());
+        }
+
+        [Scenario]
+        public void SubscriberRegistrationWithInvalidHandlerMethodSignature(
+            EventBroker eventBroker,
+            Exception exception)
+        {
+            "Establish an event broker".x(() =>
+                eventBroker = new EventBroker());
+
+            "When registering an invalid subscriber with invalid handler event signature".x(() =>
+                exception = Catch.Exception(() =>
+                    eventBroker.Register(new InvalidSubscriberWithWrongSignature())));
+
+            "It should throw an exception".x(() =>
+                exception
+                    .Should().NotBeNull()
+                    .And.BeOfType<InvalidSubscriptionSignatureException>());
+        }
+
+        [Scenario]
+        public void PublisherRegistrationWithStaticPublicationEvent(
+            EventBroker eventBroker,
+            Exception exception)
+        {
+            "Establish an event broker".x(() =>
+                eventBroker = new EventBroker());
+
+            "When registering an invalid publisher with static event publication event".x(() =>
+                exception = Catch.Exception(() =>
+                    eventBroker.Register(new InvalidPublisherWithStaticEvent())));
+
+            "It should throw an exception".x(() =>
+                exception
+                    .Should().NotBeNull()
+                    .And.BeOfType<StaticPublisherEventException>());
+        }
+
+        [Scenario]
+        public void SubscriberRegistrationWithStaticHandlerMethod(
+            EventBroker eventBroker,
+            Exception exception)
+        {
+            "Establish an event broker".x(() =>
+                eventBroker = new EventBroker());
+
+            "When registering an invalid subscriber with static subscription handler method".x(() =>
+                exception = Catch.Exception(() =>
+                    eventBroker.Register(new InvalidSubscriberStaticHandler())));
+
+            "It should throw an exception".x(() =>
+                exception
+                    .Should().NotBeNull()
+                    .And.BeOfType<StaticSubscriberHandlerException>());
+        }
+
+        [Scenario]
+        public void SubscriberRegistrationOnUiThreadWithoutBeingOnUiThread(
+            EventBroker eventBroker,
+            Exception exception)
+        {
+            "Establish an event broker".x(() =>
+                eventBroker = new EventBroker());
+
+            "When registering an subscriber with handler on ui thread without being on ui thread".x(() =>
+            {
+                SynchronizationContext.SetSynchronizationContext(null);
+
+                exception = Catch.Exception(() =>
+                    eventBroker.Register(new UserInterfaceSubscriber()));
+            });
+
+            "It should throw an exception".x(() =>
+                exception
+                    .Should().NotBeNull()
+                    .And.BeOfType<NotUserInterfaceThreadException>());
+        }
+
+        [Scenario]
+        public void SubscriberRegistrationWithEventArgsNotMatchingPublication(
+            EventBroker eventBroker,
+            Exception exception)
+        {
+            "Establish an event broker".x(() =>
+                eventBroker = new EventBroker());
+
+            "Establish a registered publisher".x(() =>
+                eventBroker.Register(new SimpleEvent.EventPublisher()));
+
+            "When registering an subscriber with event args not matching the existing publication".x(() =>
+                exception = Catch.Exception(() =>
+                    eventBroker.Register(new SubscriberWithWrongEventArgsType())));
+
+            "It should throw an exception".x(() =>
+                exception
+                    .Should().NotBeNull()
+                    .And.BeOfType<EventTopicException>());
+        }
+
+        [Scenario]
+        public void PublisherRegistrationNotMatchingExistingSubscription(
+            EventBroker eventBroker,
+            Exception exception)
+        {
+            "Establish an event broker".x(() =>
+                eventBroker = new EventBroker());
+
+            "Establish a registered subscriber".x(() =>
+                eventBroker.Register(new CustomEvent.EventSubscriber()));
+
+            "When registering an publisher and event args type not matching existing subscription".x(() =>
+                exception = Catch.Exception(() =>
+                    eventBroker.Register(new PublisherWithWrongEventArgsType())));
+
+            "It should throw an exception".x(() =>
+                exception
+                    .Should().NotBeNull()
+                    .And.BeOfType<EventTopicException>());
+        }
+
+        private class InvalidPublisherWithRepeatedEventPublication
         {
             [EventPublication(SimpleEvent.EventTopic)]
             [EventPublication(SimpleEvent.EventTopic)]
             // ReSharper disable once EventNeverInvoked
             public event EventHandler Event;
         }
-    }
-    
-    public class When_registering_a_publisher_with_invalid_event_signature : ExceptionsSpecification
-    {
-        static Exception exception;
 
-        Because of = () =>
-            exception = Catch.Exception(() =>
-                eventBroker.Register(new InvalidPublisherWithWrongEventSignature()));
-
-        It should_throw_exception = () =>
-            exception
-                .Should().NotBeNull()
-                .And.BeOfType<InvalidPublicationSignatureException>();
-
-        public class InvalidPublisherWithWrongEventSignature
+        private class InvalidPublisherWithWrongEventSignature
         {
             public delegate int MyEventHandler(string name);
 
@@ -72,182 +200,51 @@ namespace Appccelerate.EventBroker.Registration
             // ReSharper disable once EventNeverSubscribedTo.Global
             public event MyEventHandler SimpleEvent;
         }
-    }
-    
-    public class When_registering_a_subscriber_with_invalid_handler_method_signature : ExceptionsSpecification
-    {
-        static Exception exception;
 
-        Because of = () =>
-            exception = Catch.Exception(() =>
-                eventBroker.Register(new InvalidSubscriberWithWrongSignature()));
-
-        It should_throw_exception = () =>
-            exception
-                .Should().NotBeNull()
-                .And.BeOfType<InvalidSubscriptionSignatureException>();
-
-        public class InvalidSubscriberWithWrongSignature
+        private class InvalidSubscriberWithWrongSignature
         {
             [EventSubscription("topic", typeof(Handlers.OnPublisher))]
             public void SimpleEvent(int i, EventArgs e)
             {
             }
         }
-    }
 
-    public class When_registering_a_publisher_with_a_static_publication_event : ExceptionsSpecification
-    {
-        static Exception exception;
-
-        Because of = () =>
-            exception = Catch.Exception(() =>
-                eventBroker.Register(new InvalidPublisherWithStaticEvent()));
-
-        It should_throw_exception = () =>
-            exception
-                .Should().NotBeNull()
-                .And.BeOfType<StaticPublisherEventException>();
-
-        public class InvalidPublisherWithStaticEvent
+        private class InvalidPublisherWithStaticEvent
         {
             [EventPublication("topic")]
             // ReSharper disable once EventNeverInvoked
             // ReSharper disable once EventNeverSubscribedTo.Global
             public static event EventHandler SimpleEvent;
         }
-    }
-    
-    public class When_registering_a_subscriber_with_a_static_subscription_handler_method : ExceptionsSpecification
-    {
-        static Exception exception;
 
-        Because of = () =>
-            exception = Catch.Exception(() =>
-                eventBroker.Register(new InvalidSubscriberStaticHandler()));
-
-        It should_throw_exception = () =>
-            exception
-                .Should().NotBeNull()
-                .And.BeOfType<StaticSubscriberHandlerException>();
-
-        public class InvalidSubscriberStaticHandler
+        private class InvalidSubscriberStaticHandler
         {
             [EventSubscription("topic", typeof(Handlers.OnPublisher))]
             public static void SimpleEvent(object sender, EventArgs e)
             {
             }
         }
-    }
-    
-    public class When_registering_a_subscriber_with_handler_type_user_interface_not_on_the_ui_thread : ExceptionsSpecification
-    {
-        static Exception exception;
 
-        Because of = () =>
-            exception = Catch.Exception(() =>
-                eventBroker.Register(new UserInterfaceSubscriber()));
-
-        It should_throw_exception = () =>
-            exception
-                .Should().NotBeNull()
-                .And.BeOfType<NotUserInterfaceThreadException>();
-
-        public class UserInterfaceSubscriber
+        private class UserInterfaceSubscriber
         {
             [EventSubscription("topic", typeof(Handlers.OnUserInterface))]
             public void SimpleEvent(object sender, EventArgs e)
             {
             }
         }
-    }
-    
-    public class When_registering_a_subscriber_with_event_args_type_not_matching_existing_publication : ExceptionsSpecification
-    {
-        static Exception exception;
-        static SimpleEvent.EventPublisher publisher;
-        
-        Establish context = () =>
-            {
-                publisher = new SimpleEvent.EventPublisher();
 
-                eventBroker.Register(publisher);
-            };
-
-        Because of = () =>
-            exception = Catch.Exception(() =>
-                eventBroker.Register(new SubscriberWithWrongEventArgsType()));
-
-        It should_throw_exception = () =>
-            exception
-                .Should().NotBeNull()
-                .And.BeOfType<EventTopicException>();
-
-        public class SubscriberWithWrongEventArgsType
+        private class SubscriberWithWrongEventArgsType
         {
             [EventSubscription(SimpleEvent.EventTopic, typeof(Handlers.OnPublisher))]
             public void Handle(object sender, EventArgs<string> e)
             {
             }
         }
-    }
 
-    public class When_registering_a_publisher_with_event_args_type_not_matching_existing_subscription : ExceptionsSpecification
-    {
-        static Exception exception;
-        static CustomEvent.EventSubscriber subscriber;
-
-        Establish context = () =>
-        {
-            subscriber = new CustomEvent.EventSubscriber();
-
-            eventBroker.Register(subscriber);
-        };
-
-        Because of = () =>
-            exception = Catch.Exception(() =>
-                eventBroker.Register(new PublisherWithWrongEventArgsType()));
-
-        It should_throw_exception = () =>
-            exception
-                .Should().NotBeNull()
-                .And.BeOfType<EventTopicException>();
-
-        public class PublisherWithWrongEventArgsType
+        private class PublisherWithWrongEventArgsType
         {
             [EventPublication(CustomEvent.EventTopic)]
             public event EventHandler<EventArgs<int>> Event;
         }
-    }
-    
-    public class When_registering_a_publisher_with_private_publication_event : ExceptionsSpecification
-    {
-        static Exception exception;
-
-        Because of = () =>
-            exception = Catch.Exception(() =>
-                eventBroker.Register(new InvalidPublisherPrivateEvent()));
-
-        [Ignore("this is not yet supported.")]
-        It should_throw_exception = () =>
-            true.Should().BeFalse();
-
-        public class InvalidPublisherPrivateEvent
-        {
-            [EventPublication("topic")]
-            // ReSharper disable once EventNeverInvoked
-            private event EventHandler Event;
-        }
-    }
-    
-    [Subject(Subjects.Exceptions)]
-    public class ExceptionsSpecification
-    {
-        protected static EventBroker eventBroker;
-        
-        Establish context = () =>
-            {
-                eventBroker = new EventBroker();
-            };
     }
 }
