@@ -19,38 +19,49 @@
 namespace Appccelerate.EventBroker.Matchers
 {
     using FluentAssertions;
+    using Xbehave;
 
-    using Machine.Specifications;
-
-    [Subject(Subjects.Matchers)]
-    public class When_firing_an_event_with_publication_matcher
+    public class PublicationMatchersSpecifications
     {
-        protected static EventBroker eventBroker;
-        protected static ScopeEvent.NamedPublisher publisher;
-        protected static ScopeEvent.NamedSubscriber matchingSubscriber;
-        protected static ScopeEvent.NamedSubscriber nonMatchingSubscriber;
-
-        Establish context = () =>
+        [Scenario]
+        public void Match(
+            EventBroker eventBroker,
+            ScopeEvent.NamedPublisher publisher,
+            ScopeEvent.NamedSubscriber matchingSubscriber,
+            ScopeEvent.NamedSubscriber nonMatchingSubscriber)
         {
-            eventBroker = new EventBroker();
-            publisher = new ScopeEvent.NamedPublisher("A.Name");
-            matchingSubscriber = new ScopeEvent.NamedSubscriber("A.Name");
-            nonMatchingSubscriber = new ScopeEvent.NamedSubscriber("A");
+            "Establish an event broker with a matcher".x(() =>
+                eventBroker = new EventBroker());
 
-            eventBroker.Register(publisher);
-            eventBroker.Register(matchingSubscriber);
-            eventBroker.Register(nonMatchingSubscriber);
-        };
+            "Establish a registered named publisher".x(() =>
+            {
+                publisher = new ScopeEvent.NamedPublisher("A.Name");
+                eventBroker.Register(publisher);
+            });
 
-        Because of = () =>
-            publisher.FireEventToChildrenAndSiblings();
+            "Establish a registered matching subscriber".x(() =>
+            {
+                matchingSubscriber = new ScopeEvent.NamedSubscriber("A.Name");
+                eventBroker.Register(matchingSubscriber);
+            });
 
-        It should_call_subscriber_method_of_matching_subscriber = () =>
-            matchingSubscriber.CalledGlobally
-                .Should().BeTrue();
+            "Establish a registered not matching subscriber".x(() =>
+            {
+                nonMatchingSubscriber = new ScopeEvent.NamedSubscriber("A");
+                eventBroker.Register(nonMatchingSubscriber);
+            });
 
-        It should_not_call_subscriber_method_of_non_matching_subscriber = () =>
-            nonMatchingSubscriber.CalledGlobally
-                .Should().BeFalse();
+            "When firing an event".x(() =>
+                publisher.FireEventToChildrenAndSiblings());
+
+            "It should call subscriber method of matching subscriber".x(() =>
+                matchingSubscriber.CalledGlobally
+                                .Should().BeTrue());
+
+            "It should not call subscriber method of non matching subscriber".x(() =>
+                nonMatchingSubscriber.CalledGlobally
+                    .Should().BeFalse());
+
+        }
     }
 }
