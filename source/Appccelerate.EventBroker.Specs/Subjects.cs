@@ -22,24 +22,10 @@ namespace Appccelerate.EventBroker
     {
         public const string Exceptions = "Exceptions";
 
-        public const string Extensions = "Extensions";
-
-        public const string RegisterDirectlyOnEventBroker = "Register directly on event broker";
-
-        public const string HandlerRestriction = "Handler restriction";
-
-        public const string InterfaceRegistration = "Interface registration";
-
-        public const string Matchers = "Matchers";
-
         public const string Scope = "Scope matchers";
 
         public const string Events = "Events";
 
         public const string Cleanup = "Clean-up";
-
-        public const string Description = "Description";
-
-        public const string EventRegistrar = "Event registrar";
     }
 }

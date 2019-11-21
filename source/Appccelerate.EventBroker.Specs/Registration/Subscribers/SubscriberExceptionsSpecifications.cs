@@ -33,9 +33,7 @@ namespace Appccelerate.EventBroker.Registration.Subscribers
         public void SetupEventBroker()
         {
             "Establish an event broker".x(() =>
-            {
-                this.eventBroker = new EventBroker();
-            });
+                this.eventBroker = new EventBroker());
         }
 
         [Scenario]
