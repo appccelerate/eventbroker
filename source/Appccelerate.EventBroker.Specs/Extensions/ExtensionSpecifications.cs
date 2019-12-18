@@ -149,11 +149,12 @@ namespace Appccelerate.EventBroker.Extensions
         }
 
         [Scenario]
-        public void Disposal()
+        public void Disposal(SimpleEvent.EventPublisher publisher)
         {
             "Establish an event broker with a publisher and an extension".x(() =>
             {
-                this.eventBroker.Register(new SimpleEvent.EventPublisher());
+                publisher = new SimpleEvent.EventPublisher();
+                this.eventBroker.Register(publisher);
                 this.eventBroker.AddExtension(this.extension);
             });
 

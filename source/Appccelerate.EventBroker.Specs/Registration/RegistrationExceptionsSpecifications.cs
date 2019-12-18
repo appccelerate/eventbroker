@@ -144,13 +144,17 @@ namespace Appccelerate.EventBroker.Registration
         [Scenario]
         public void SubscriberRegistrationWithEventArgsNotMatchingPublication(
             EventBroker eventBroker,
-            Exception exception)
+            Exception exception,
+            SimpleEvent.EventPublisher eventPublisher)
         {
             "Establish an event broker".x(() =>
                 eventBroker = new EventBroker());
 
             "Establish a registered publisher".x(() =>
-                eventBroker.Register(new SimpleEvent.EventPublisher()));
+            {
+                eventPublisher = new SimpleEvent.EventPublisher();
+                eventBroker.Register(eventPublisher);
+            });
 
             "When registering an subscriber with event args not matching the existing publication".x(() =>
                 exception = Catch.Exception(() =>
@@ -165,13 +169,17 @@ namespace Appccelerate.EventBroker.Registration
         [Scenario]
         public void PublisherRegistrationNotMatchingExistingSubscription(
             EventBroker eventBroker,
-            Exception exception)
+            Exception exception,
+            CustomEvent.EventSubscriber subscriber)
         {
             "Establish an event broker".x(() =>
                 eventBroker = new EventBroker());
 
             "Establish a registered subscriber".x(() =>
-                eventBroker.Register(new CustomEvent.EventSubscriber()));
+            {
+                subscriber = new CustomEvent.EventSubscriber();
+                eventBroker.Register(subscriber);
+            });
 
             "When registering an publisher and event args type not matching existing subscription".x(() =>
                 exception = Catch.Exception(() =>

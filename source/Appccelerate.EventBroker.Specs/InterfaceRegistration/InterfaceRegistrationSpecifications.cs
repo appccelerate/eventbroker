@@ -28,13 +28,14 @@ namespace Appccelerate.EventBroker.InterfaceRegistration
 
         [Scenario]
         public void Register(
+            EventBroker eventBroker,
             Publisher publisher,
             Subscriber subscriber,
             EventArgs sentEventArgs)
         {
             "Establish an event broker with one publisher and one subscriber".x(() =>
             {
-                var eventBroker = new EventBroker();
+                eventBroker = new EventBroker();
                 publisher = new Publisher();
                 subscriber = new Subscriber();
 

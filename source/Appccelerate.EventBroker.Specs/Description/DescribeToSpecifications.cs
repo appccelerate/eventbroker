@@ -32,16 +32,23 @@ namespace Appccelerate.EventBroker.Description
         private const string CustomEventTopic = "topic://CustomEvent";
 
         [Scenario]
-        public void Describe(EventBroker eventBroker, StringWriter writer, string description)
+        public void Describe(
+            EventBroker eventBroker,
+            StringWriter writer,
+            string description,
+            Publisher publisher,
+            NamedPublisher namedPublisher,
+            Subscriber subscriber,
+            NamedSubscriber namedSubscriber)
         {
             "Establish an event broker with publisher and subscriber".x(() =>
             {
                 eventBroker = new EventBroker();
 
-                var publisher = new Publisher();
-                var namedPublisher = new NamedPublisher();
-                var subscriber = new Subscriber();
-                var namedSubscriber = new NamedSubscriber();
+                publisher = new Publisher();
+                namedPublisher = new NamedPublisher();
+                subscriber = new Subscriber();
+                namedSubscriber = new NamedSubscriber();
 
                 eventBroker.Register(publisher);
                 eventBroker.Register(namedPublisher);
@@ -70,20 +77,20 @@ namespace Appccelerate.EventBroker.Description
                     .And.Match("*" + CustomEventTopic + "*" + typeof(Publisher) + "*"));
 
             "It should lists all subscribers per event topic".x(() =>
-                    description
+                description
                     .Should().Match("*" + SimpleEventTopic + "*" + typeof(Subscriber) + "*" + CustomEventTopic + "*")
                     .And.Match("*" + CustomEventTopic + "*" + typeof(NamedSubscriber) + "*"));
 
             "It should list the event name per publisher".x(() =>
                 description
-                .Should().Match(
-                    "*" +
-                    typeof(Publisher) +
-                    "*Event = SimpleEvent*" +
-                    typeof(NamedPublisher) +
-                    "*Event = SimpleEvent*" +
-                    typeof(Publisher) +
-                    "*Event = CustomEvent*"));
+                    .Should().Match(
+                        "*" +
+                        typeof(Publisher) +
+                        "*Event = SimpleEvent*" +
+                        typeof(NamedPublisher) +
+                        "*Event = SimpleEvent*" +
+                        typeof(Publisher) +
+                        "*Event = CustomEvent*"));
 
             "It should list event handler type per publisher".x(() =>
                 description
@@ -139,13 +146,11 @@ namespace Appccelerate.EventBroker.Description
                     "*EventArgs type = Appccelerate.EventBroker.Description.DescribeToSpecifications+CustomEventArgs, *"));
         }
 
-        private class Publisher
+        public class Publisher
         {
-            [EventPublication(SimpleEventTopic)]
-            public event EventHandler SimpleEvent;
+            [EventPublication(SimpleEventTopic)] public event EventHandler SimpleEvent;
 
-            [EventPublication(CustomEventTopic)]
-            public event EventHandler<CustomEventArgs> CustomEvent;
+            [EventPublication(CustomEventTopic)] public event EventHandler<CustomEventArgs> CustomEvent;
 
             public void FireSimpleEvent() =>
                 this.SimpleEvent?.Invoke(this, EventArgs.Empty);
@@ -154,7 +159,7 @@ namespace Appccelerate.EventBroker.Description
                 this.CustomEvent?.Invoke(this, null);
         }
 
-        private class NamedPublisher : INamedItem
+        public class NamedPublisher : INamedItem
         {
             [EventPublication("topic://SimpleEvent", typeof(PublishToChildren))]
             public event EventHandler SimpleEvent;
@@ -165,7 +170,7 @@ namespace Appccelerate.EventBroker.Description
                 this.SimpleEvent?.Invoke(this, EventArgs.Empty);
         }
 
-        private class Subscriber
+        public class Subscriber
         {
             [EventSubscription("topic://SimpleEvent", typeof(Handlers.OnPublisher), typeof(SubscribeGlobal))]
             public void HandleSimpleEvent(object sender, EventArgs e)
@@ -173,7 +178,7 @@ namespace Appccelerate.EventBroker.Description
             }
         }
 
-        private class NamedSubscriber : INamedItem
+        public class NamedSubscriber : INamedItem
         {
             public string EventBrokerItemName => "NamedSubscriberName";
 
@@ -183,7 +188,7 @@ namespace Appccelerate.EventBroker.Description
             }
         }
 
-        private class CustomEventArgs : EventArgs
+        public class CustomEventArgs : EventArgs
         {
             public int I { get; } = 5;
 

@@ -470,8 +470,7 @@ namespace Appccelerate.EventBroker.Internals
 
         private void CallRegisterIfRegisterableOn(object item)
         {
-            var eventBrokerRegisterable = item as IEventBrokerRegisterable;
-            if (eventBrokerRegisterable != null)
+            if (item is IEventBrokerRegisterable eventBrokerRegisterable)
             {
                 eventBrokerRegisterable.Register(this);
             }
@@ -479,8 +478,7 @@ namespace Appccelerate.EventBroker.Internals
 
         private void CallUnregisterIfRegisterableOn(object item)
         {
-            var eventBrokerRegisterable = item as IEventBrokerRegisterable;
-            if (eventBrokerRegisterable != null)
+            if (item is IEventBrokerRegisterable eventBrokerRegisterable)
             {
                 eventBrokerRegisterable.Unregister(this);
             }
