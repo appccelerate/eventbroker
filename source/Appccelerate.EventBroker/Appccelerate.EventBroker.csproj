@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net47;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -29,9 +29,11 @@
       extension support.
     </description>
     <PackageReleaseNotes>
-      Supports not .NET Standard 2.0
+      3.2.0:
+	  - Supports now .NET Standard 2.0
       
-      Fixed missing call to base.Initialize in OnUserInterface and OnUserInterfaceAsync handlers resulting in NullReferenceExceptions on ExtensionHost.
+	  3.1.15
+      - Fixed missing call to base.Initialize in OnUserInterface and OnUserInterfaceAsync handlers resulting in NullReferenceExceptions on ExtensionHost.
     </PackageReleaseNotes>
     <PackageTags>Appccelerate eventbroker</PackageTags>
   </PropertyGroup>
