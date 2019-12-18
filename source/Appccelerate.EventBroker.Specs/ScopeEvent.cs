@@ -48,17 +48,17 @@ namespace Appccelerate.EventBroker
 
             public void FireEventGlobally()
             {
-                this.EventFiredGlobally(this, EventArgs.Empty);
+                this.EventFiredGlobally?.Invoke(this, EventArgs.Empty);
             }
 
             public void FireEventToParentsAndSiblings()
             {
-                this.EventFiredToParentsAndSiblings(this, EventArgs.Empty);
+                this.EventFiredToParentsAndSiblings?.Invoke(this, EventArgs.Empty);
             }
 
             public void FireEventToChildrenAndSiblings()
             {
-                this.EventFiredToChildrenAndSiblings(this, EventArgs.Empty);
+                this.EventFiredToChildrenAndSiblings?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -96,6 +96,6 @@ namespace Appccelerate.EventBroker
             {
                 this.CalledFromChild = true;
             }
-        } 
+        }
     }
 }

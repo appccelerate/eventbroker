@@ -33,7 +33,7 @@ namespace Appccelerate.EventBroker
 
             public void FireEvent(EventArgs eventArgs)
             {
-                this.Event(this, eventArgs);
+                this.Event?.Invoke(this, eventArgs);
             }
         }
 
@@ -43,7 +43,7 @@ namespace Appccelerate.EventBroker
 
             public void FireEvent(EventArgs eventArgs)
             {
-                this.Event(this, eventArgs);
+                this.Event?.Invoke(this, eventArgs);
             }
 
             public void Register(IEventRegistrar eventRegistrar)

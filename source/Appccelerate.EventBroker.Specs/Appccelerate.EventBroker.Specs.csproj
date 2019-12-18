@@ -19,7 +19,7 @@
     <PackageReference Include="FakeItEasy" Version="1.25.1" />
     <PackageReference Include="FluentAssertions" Version="3.2.2" />
     <PackageReference Include="Machine.Specifications" Version="0.9.1" />
-    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="Xbehave" Version="2.4.0" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />

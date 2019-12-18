@@ -19,36 +19,34 @@
 namespace Appccelerate.EventBroker
 {
     using System;
-
     using FluentAssertions;
+    using Xbehave;
 
-    using Machine.Specifications;
-
-    [Subject(Subjects.Events)]
-    public class When_firing_an_event_directly_on_the_event_broker
+    public class FireEventsDirectlyOnEventBrokerSpecifications
     {
-        const string EventTopic = "topic://topic";
-        
-        static EventBroker eventBroker;
-        static Subscriber subscriber;
+        private const string EventTopic = "topic://topic";
 
-        Establish context = () =>
+        [Scenario]
+        public void DirectEventBrokerEventPublication(
+            EventBroker eventBroker,
+            Subscriber subscriber)
+        {
+            "Establish an event broker".x(() =>
+                eventBroker = new EventBroker());
+
+            "Establish a registered subscriber".x(() =>
             {
-                eventBroker = new EventBroker();
-
                 subscriber = new Subscriber();
-
                 eventBroker.Register(subscriber);
-            };
+            });
 
-        Because of = () =>
-            {
-                eventBroker.Fire(EventTopic, new object(), HandlerRestriction.None, new object(), EventArgs.Empty);
-            };
+            "When firing event directly on event broker".x(() =>
+                eventBroker.Fire(EventTopic, new object(), HandlerRestriction.None, new object(), EventArgs.Empty));
 
-        It should_call_subscriber = () =>
-            subscriber.HandledEvent
-                .Should().BeTrue();
+            "It should call the subscriber".x(() =>
+                subscriber.HandledEvent
+                    .Should().BeTrue());
+        }
 
         public class Subscriber
         {
