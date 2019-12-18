@@ -26,7 +26,6 @@ namespace Appccelerate.EventBroker.Internals.Publications
     using Appccelerate.EventBroker.Exceptions;
     using Appccelerate.EventBroker.Internals.Exceptions;
     using Appccelerate.EventBroker.Matchers;
-    using Appccelerate.Formatters;
 
     /// <summary>
     /// Represents a topic publication.
@@ -45,7 +44,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
             object publisher,
             EventInfo eventInfo,
             HandlerRestriction handlerRestriction,
-            IList<IPublicationMatcher> publicationMatchers) : 
+            IList<IPublicationMatcher> publicationMatchers) :
                 base(topic, publisher, handlerRestriction, publicationMatchers)
         {
             this.eventInfo = eventInfo;
@@ -68,16 +67,10 @@ namespace Appccelerate.EventBroker.Internals.Publications
                 this.GetType().GetMethod("PublicationHandler"));
             this.eventInfo.AddEventHandler(publisher, handler);
         }
-        
-        public override string EventName
-        {
-            get { return this.eventInfo.Name; }
-        }
 
-        public override Type EventArgsType
-        {
-            get { return this.eventArgsType; }
-        }
+        public override string EventName => this.eventInfo.Name;
+
+        public override Type EventArgsType => this.eventArgsType;
 
         public void PublicationHandler(object sender, EventArgs e)
         {
@@ -86,7 +79,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
 
         public override void DescribeTo(TextWriter writer)
         {
-            Ensure.ArgumentNotNull(writer, "writer");
+            Guard.AgainstNullArgument(nameof(writer), writer);
 
             if (!this.IsPublisherAlive)
             {
@@ -94,7 +87,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
             }
 
             base.DescribeTo(writer);
-                
+
             writer.Write(", EventHandler type = ");
             writer.Write(this.eventInfo.EventHandlerType.FullNameToString());
         }

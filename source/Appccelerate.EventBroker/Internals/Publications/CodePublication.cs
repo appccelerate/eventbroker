@@ -61,15 +61,9 @@ namespace Appccelerate.EventBroker.Internals.Publications
             this.eventArgsType = eventHandler.GetType().GetGenericArguments()[0];
         }
 
-        public override string EventName
-        {
-            get { return EventNameOfCodePublication; }
-        }
+        public override string EventName => EventNameOfCodePublication;
 
-        public override Type EventArgsType
-        {
-            get { return this.eventArgsType; }
-        }
+        public override Type EventArgsType => this.eventArgsType;
 
         public void Unregister(ref EventHandler publishedEvent)
         {

@@ -53,18 +53,12 @@ namespace Appccelerate.EventBroker.Internals.Exceptions
         /// Gets the type of the subscriber.
         /// </summary>
         /// <value>The type of the subscriber.</value>
-        public Type SubscriberType
-        {
-            get { return this.subscriberType; }
-        }
+        public Type SubscriberType => this.subscriberType;
 
         /// <summary>
         /// Gets the name of the handler method.
         /// </summary>
         /// <value>The name of the handler method.</value>
-        public string HandlerMethodName
-        {
-            get { return this.handlerMethodName; }
-        }
+        public string HandlerMethodName => this.handlerMethodName;
     }
 }

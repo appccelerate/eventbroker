@@ -23,105 +23,99 @@ namespace Appccelerate.EventBroker.Registration.Subscribers
     using Appccelerate.EventBroker.Extensions;
     using FluentAssertions;
     using Machine.Specifications;
+    using Xbehave;
 
-    public class When_a_subscriber_throws_an_exception : SubscriberExceptionsSpecification
+    public class SubscriberExceptionsSpecifications
     {
-        static Exception exception;
-        static SimpleEvent.EventPublisher publisher;
-        static ThrowingSubscriber subscriber;
+        private EventBroker eventBroker;
 
-        Establish context = () =>
+        [Background]
+        public void SetupEventBroker()
         {
-            publisher = new SimpleEvent.EventPublisher();
-            subscriber = new ThrowingSubscriber();
-
-            eventBroker.Register(publisher);
-            eventBroker.Register(subscriber);
-        };
-
-        Because of = () =>
-            exception = Catch.Exception(() => publisher.FireEvent(EventArgs.Empty));
-
-        It should_pass_exception_to_publisher = () =>
-            exception
-                .Should().NotBeNull()
-                .And.Subject.As<Exception>().Message
-                    .Should().Be("test");
-    }
-
-    public class When_several_subscribers_throw_an_exception : SubscriberExceptionsSpecification
-    {
-        static Exception exception;
-        static SimpleEvent.EventPublisher publisher;
-        static ThrowingSubscriber subscriber1;
-        static ThrowingSubscriber subscriber2;
-
-        Establish context = () =>
-        {
-            publisher = new SimpleEvent.EventPublisher();
-            subscriber1 = new ThrowingSubscriber();
-            subscriber2 = new ThrowingSubscriber();
-
-            eventBroker.Register(publisher);
-            eventBroker.Register(subscriber1);
-            eventBroker.Register(subscriber2);
-        };
-
-        Because of = () =>
-            exception = Catch.Exception(() => publisher.FireEvent(EventArgs.Empty));
-
-        It should_pass_exception_to_publisher = () =>
-            exception
-                .Should().NotBeNull()
-                .And.Subject.As<Exception>().Message
-                    .Should().Be("test");
-
-        It should_stop_executing_subscribers_after_first_exception = () =>
-            subscriber2.Handled.Should().BeFalse("second subscriber should not be clled anymore");
-    }
-
-    public class When_a_subscriber_throws_an_exception_and_an_extension_handles_it : SubscriberExceptionsSpecification
-    {
-        static Exception exception;
-        static SimpleEvent.EventPublisher publisher;
-        static ThrowingSubscriber subscriber;
-
-        Establish context = () =>
-        {
-            publisher = new SimpleEvent.EventPublisher();
-            subscriber = new ThrowingSubscriber();
-
-            eventBroker.Register(publisher);
-            eventBroker.Register(subscriber);
-
-            eventBroker.AddExtension(new ExceptionHandlingExtension());
-        };
-
-        Because of = () =>
-            exception = Catch.Exception(() => publisher.FireEvent(EventArgs.Empty));
-
-        It should_not_pass_exception_to_publisher = () =>
-            exception
-                .Should().BeNull();
-
-        public class ExceptionHandlingExtension : EventBrokerExtensionBase
-        {
-            public override void SubscriberExceptionOccurred(IEventTopicInfo eventTopic, Exception exception, ExceptionHandlingContext context)
-            {
-                context.SetHandled();
-            }
+            "Establish an event broker".x(() =>
+                this.eventBroker = new EventBroker());
         }
-    }
 
-    [Subject(Subjects.Exceptions)]
-    public class SubscriberExceptionsSpecification
-    {
-        protected static EventBroker eventBroker;
-
-        Establish context = () =>
+        [Scenario]
+        public void HandleThrowingSubscription(
+            Exception exception,
+            SimpleEvent.EventPublisher publisher,
+            ThrowingSubscriber subscriber)
         {
-            eventBroker = new EventBroker();
-        };
+            "Establish a registered publisher and throwing subscriber".x(() =>
+            {
+                publisher = new SimpleEvent.EventPublisher();
+                subscriber = new ThrowingSubscriber();
+
+                this.eventBroker.Register(publisher);
+                this.eventBroker.Register(subscriber);
+            });
+
+            "When firing an event".x(() =>
+                exception = Catch.Exception(() => publisher.FireEvent(EventArgs.Empty)));
+
+            "It should pass the exception to the publisher".x(() =>
+                exception
+                    .Should().NotBeNull()
+                    .And.Subject.As<Exception>().Message
+                    .Should().Be("test"));
+        }
+
+        [Scenario]
+        public void HandleMultipleThrowingSubscriptions(
+            Exception exception,
+            SimpleEvent.EventPublisher publisher,
+            ThrowingSubscriber subscriber1,
+            ThrowingSubscriber subscriber2)
+        {
+            "Establish a registered publisher and throwing subscriber".x(() =>
+            {
+                publisher = new SimpleEvent.EventPublisher();
+                subscriber1 = new ThrowingSubscriber();
+                subscriber2 = new ThrowingSubscriber();
+
+                this.eventBroker.Register(publisher);
+                this.eventBroker.Register(subscriber1);
+                this.eventBroker.Register(subscriber2);
+            });
+
+            "When firing an event".x(() =>
+                exception = Catch.Exception(() => publisher.FireEvent(EventArgs.Empty)));
+
+            "It should pass the exception to the publisher".x(() =>
+                exception
+                    .Should().NotBeNull()
+                    .And.Subject.As<Exception>().Message
+                    .Should().Be("test"));
+
+            "It should stop executing subscribers after the first exception".x(() =>
+                subscriber2.Handled.Should().BeFalse("second subscriber should not be clled anymore"));
+        }
+
+        [Scenario]
+        public void HandleThrowingSubscriptionWithExtension(
+            Exception exception,
+            SimpleEvent.EventPublisher publisher,
+            ThrowingSubscriber subscriber)
+        {
+            "Establish a registered publisher and throwing subscriber".x(() =>
+            {
+                publisher = new SimpleEvent.EventPublisher();
+                subscriber = new ThrowingSubscriber();
+
+                this.eventBroker.Register(publisher);
+                this.eventBroker.Register(subscriber);
+
+                this.eventBroker.AddExtension(new ExceptionHandlingExtension());
+            });
+
+            "When firing an event".x(() =>
+                exception = Catch.Exception(() => publisher.FireEvent(EventArgs.Empty)));
+
+            "It should not pass exception to the publisher".x(() =>
+                exception
+                    .Should().BeNull());
+        }
 
         public class ThrowingSubscriber
         {
@@ -132,6 +126,14 @@ namespace Appccelerate.EventBroker.Registration.Subscribers
             {
                 this.Handled = true;
                 throw new Exception("test");
+            }
+        }
+
+        private class ExceptionHandlingExtension : EventBrokerExtensionBase
+        {
+            public override void SubscriberExceptionOccurred(IEventTopicInfo eventTopic, Exception exception, ExceptionHandlingContext context)
+            {
+                context.SetHandled();
             }
         }
     }

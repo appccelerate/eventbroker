@@ -16,175 +16,203 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
+using Xbehave;
+
 namespace Appccelerate.EventBroker.Extensions
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
-
     using Appccelerate.EventBroker.Exceptions;
     using Appccelerate.EventBroker.Internals.Inspection;
     using Appccelerate.EventBroker.Matchers;
-
     using FluentAssertions;
-
     using Machine.Specifications;
 
-    public class When_registering_objects_and_an_extension_was_added_on_the_event_broker : ExtensionSpecification
+    public class ExtensionSpecifications
     {
-        Establish context = () => 
-            eventBroker.AddExtension(extension);
+        private Extension extension;
+        private EventBroker eventBroker;
+        private SimpleEvent.EventPublisher publisher;
+        private SimpleEvent.EventSubscriber subscriber;
+        private EventArgs sentEventArgs;
+        private ExceptionSubscriber exceptionSubscriber;
 
-        Because of = () =>
-            {
-                eventBroker.Register(publisher);
-                eventBroker.Register(subscriber);
-            };
-
-        It should_call_extension_when_event_topic_was_created = () =>
-            extension.Log.Should().Contain("CreatedTopic");
-
-        It should_call_extension_when_publication_was_created = () =>
-            extension.Log.Should().Contain("CreatedPublication");
-        
-        It should_call_extension_when_subscription_was_created = () =>
-            extension.Log.Should().Contain("CreatedSubscription");
-
-        It should_call_extension_when_publication_was_added = () =>
-            extension.Log.Should().Contain("AddedPublication");
-        
-        It should_call_extension_when_subscription_was_added = () =>
-            extension.Log.Should().Contain("AddedSubscription");
-
-        It should_call_extension_when_item_was_scanned = () =>
-            extension.Log.Should().Contain("Scanned");
-
-        It should_call_extension_when_item_was_registered = () =>
-            extension.Log.Should().Contain("RegisteredItem");
-    }
-
-    public class When_unregistering_objects_and_an_extension_was_added_on_the_event_broker : ExtensionSpecification
-    {
-        Establish context = () =>
-            {
-                eventBroker.Register(publisher);
-                eventBroker.Register(subscriber);
-                eventBroker.AddExtension(extension);
-            };
-
-        Because of = () =>
-            {
-                eventBroker.Unregister(publisher);
-                eventBroker.Unregister(subscriber);
-            };
-
-        It should_call_extension_when_publication_was_removed = () =>
-            extension.Log.Should().Contain("RemovedPublication");
-        
-        It should_call_extension_when_subscription_was_removed = () =>
-            extension.Log.Should().Contain("RemovedSubscription");
-        
-        It should_call_extension_when_item_was_scanned = () =>
-            extension.Log.Should().Contain("Scanned");
-
-        It should_call_extension_when_item_was_unregistered = () =>
-            extension.Log.Should().Contain("UnregisteredItem");
-    }
-
-    public class When_firing_an_event_and_an_extension_was_added_on_the_event_broker : ExtensionSpecification
-    {
-        Establish context = () =>
-            {
-                eventBroker.Register(publisher);
-                eventBroker.Register(subscriber);
-
-                eventBroker.AddExtension(extension);
-            };
-
-        Because of = () => 
-            publisher.FireEvent(sentEventArgs);
-
-        It should_call_extension_when_event_is_fired = () =>
-            extension.Log.Should().Contain("FiringEvent");
-
-        It should_call_extension_when_event_is_relayed = () =>
-            extension.Log.Should().Contain("RelayingEvent");
-
-        It should_call_extension_when_event_was_relayed = () =>
-            extension.Log.Should().Contain("RelayedEvent");
-
-        It should_call_extension_when_event_was_fired = () =>
-            extension.Log.Should().Contain("FiredEvent");
-    }
-
-    public class When_disposing_the_event_broker_and_an_extension_was_added_on_the_event_broker : ExtensionSpecification
-    {
-        Establish context = () =>
+        [Background]
+        public void SetupEventBrokerAndExtensions()
         {
-            eventBroker.Register(new SimpleEvent.EventPublisher());
-            eventBroker.AddExtension(extension);
-        };
+            "Establish an extension".x(() =>
+                this.extension = new Extension());
 
-        Because of = () =>
-            eventBroker.Dispose();
+            "Establish an event broker".x(() =>
+                this.eventBroker = new EventBroker());
 
-        It should_call_extension_when_event_topic_was_disposed = () =>
-            extension.Log.Should().Contain("Disposed");
-    }
+            "Establish an publisher".x(() =>
+                this.publisher = new SimpleEvent.EventPublisher());
 
-    public class When_events_are_skipped_and_an_extension_was_added_on_the_event_broker : ExtensionSpecification
-    {
-        Establish context = () =>
+            "Establish a subscriber".x(() =>
+                this.subscriber = new SimpleEvent.EventSubscriber());
+
+            "Establish event args".x(() =>
+                this.sentEventArgs = new EventArgs());
+        }
+
+        [Scenario]
+        public void Register()
         {
-            eventBroker.Register(publisher);
-            eventBroker.Register(subscriber);
+            "Establish an registered extension".x(() => this.eventBroker.AddExtension(this.extension));
 
-            eventBroker.AddGlobalMatcher(new Matcher());
-
-            eventBroker.AddExtension(extension);
-        };
-
-        Because of = () =>
-            publisher.FireEvent(EventArgs.Empty);
-
-        It should_call_extension_when_event_was_skipped = () =>
-            extension.Log.Should().Contain("SkippedEvent");
-
-        public class Matcher : IMatcher
-        {
-            public bool Match(IPublication publication, ISubscription subscription, EventArgs e)
+            "When registering a publisher and a subscriber".x(() =>
             {
-                return false;
-            }
+                this.eventBroker.Register(this.publisher);
+                this.eventBroker.Register(this.subscriber);
+            });
+
+            "It should call extension when the event topic was created".x(() =>
+                this.extension.Log.Should().Contain("CreatedTopic"));
+
+            "It should call extension when the publication was created".x(() =>
+                this.extension.Log.Should().Contain("CreatedPublication"));
+
+            "It should call extension when the subscription was created".x(() =>
+                this.extension.Log.Should().Contain("CreatedSubscription"));
+
+            "It should call extension when the publication was added".x(() =>
+                this.extension.Log.Should().Contain("AddedPublication"));
+
+            "It should call extension when the subscription was added".x(() =>
+                this.extension.Log.Should().Contain("AddedSubscription"));
+
+            "It should call extension when item was scanned".x(() =>
+                this.extension.Log.Should().Contain("Scanned"));
+
+            "It should call extension when item was registered".x(() =>
+                this.extension.Log.Should().Contain("RegisteredItem"));
+        }
+
+        [Scenario]
+        public void Unregister()
+        {
+            "Establish an event broker with extensions, one subscriber and one publisher".x(() =>
+            {
+                this.eventBroker.Register(this.publisher);
+                this.eventBroker.Register(this.subscriber);
+                this.eventBroker.AddExtension(this.extension);
+            });
+
+            "When unregistering the subscriber and publisher".x(() =>
+            {
+                this.eventBroker.Unregister(this.publisher);
+                this.eventBroker.Unregister(this.subscriber);
+            });
+
+            "It should call the extension when the publication was removed".x(() =>
+                this.extension.Log.Should().Contain("RemovedPublication"));
+
+            "It should call the extension when the publication was removed".x(() =>
+                this.extension.Log.Should().Contain("RemovedPublication"));
+
+            "It should call the extension when the subscription was removed".x(() =>
+                this.extension.Log.Should().Contain("RemovedSubscription"));
+
+            "It should call the extension when the item was scanned".x(() =>
+                this.extension.Log.Should().Contain("Scanned"));
+
+            "It should call the extension when the item was should_call_extension_when_item_was_unregistered".x(() =>
+                this.extension.Log.Should().Contain("UnregisteredItem"));
+        }
+
+        [Scenario]
+        public void FireEvent()
+        {
+            "Establish an event broker with extensions, one subscriber and one publisher".x(() =>
+            {
+                this.eventBroker.Register(this.publisher);
+                this.eventBroker.Register(this.subscriber);
+                this.eventBroker.AddExtension(this.extension);
+            });
+
+            "When firing an event".x(() => this.publisher.FireEvent(this.sentEventArgs));
+
+            "It should call the extension when the event is firing".x(() =>
+                this.extension.Log.Should().Contain("FiringEvent"));
+
+            "It should call the extension when the event is relaying".x(() =>
+                this.extension.Log.Should().Contain("RelayingEvent"));
+
+            "It should call the extension when the event was relayed".x(() =>
+                this.extension.Log.Should().Contain("RelayedEvent"));
+
+            "It should call the extension when the event was fired".x(() =>
+                this.extension.Log.Should().Contain("FiredEvent"));
+        }
+
+        [Scenario]
+        public void Disposal(SimpleEvent.EventPublisher publisher)
+        {
+            "Establish an event broker with a publisher and an extension".x(() =>
+            {
+                publisher = new SimpleEvent.EventPublisher();
+                this.eventBroker.Register(publisher);
+                this.eventBroker.AddExtension(this.extension);
+            });
+
+            "When disposing the event broker".x(() => this.eventBroker.Dispose());
+
+            "It should call the extension when the event topic was disposed".x(() =>
+                this.extension.Log.Should().Contain("Disposed"));
+        }
+
+        [Scenario]
+        public void SkipEvents()
+        {
+            "Establish an event broker with an extension, a publisher, a subscriber and a matcher".x(() =>
+            {
+                this.eventBroker.Register(this.publisher);
+                this.eventBroker.Register(this.subscriber);
+
+                this.eventBroker.AddGlobalMatcher(new Matcher());
+
+                this.eventBroker.AddExtension(this.extension);
+            });
+
+            "When firing an event".x(() => this.publisher.FireEvent(EventArgs.Empty));
+
+            "It should call the extension when the event was skipped".x(() =>
+                this.extension.Log.Should().Contain("SkippedEvent"));
+        }
+
+        [Scenario]
+        public void SubscribeToException()
+        {
+            "Establish an event broker with an extension, a publisher, an exception subscriber".x(() =>
+            {
+                this.exceptionSubscriber = new ExceptionSubscriber();
+
+                this.eventBroker.Register(this.publisher);
+                this.eventBroker.Register(this.exceptionSubscriber);
+
+                this.eventBroker.AddExtension(this.extension);
+            });
+
+            "When firing an event".x(() =>
+                Catch.Exception(() => this.publisher.FireEvent(EventArgs.Empty)));
+
+            "It should call the extension when subscriper throws exception".x(() =>
+                this.extension.Log.Should().Contain("SubscriberExceptionOccured"));
+        }
+
+        private class Matcher : IMatcher
+        {
+            public bool Match(IPublication publication, ISubscription subscription, EventArgs e) => false;
 
             public void DescribeTo(TextWriter writer)
             {
             }
         }
-    }
 
-    public class When_subscribers_throw_exceptions_and_an_extension_was_added_on_the_event_broker : ExtensionSpecification
-    {
-        static ExceptionSubscriber exceptionSubscriber;
- 
-        Establish context = () =>
-        {
-            exceptionSubscriber = new ExceptionSubscriber();
-
-            eventBroker.Register(publisher);
-            eventBroker.Register(exceptionSubscriber);
-
-            eventBroker.AddExtension(extension);
-        };
-
-        Because of = () =>
-            Catch.Exception(() => publisher.FireEvent(EventArgs.Empty));
-
-        It should_call_extension_when_subscriber_throws_exception = () =>
-            extension.Log.Should().Contain("SubscriberExceptionOccured");
-
-        public class ExceptionSubscriber
+        private class ExceptionSubscriber
         {
             [EventSubscription(SimpleEvent.EventTopic, typeof(Handlers.OnPublisher))]
             public void Handle(object sender, EventArgs eventArgs)
@@ -192,126 +220,84 @@ namespace Appccelerate.EventBroker.Extensions
                 throw new Exception("test");
             }
         }
-    }
 
-    [Subject(Subjects.Extensions)]
-    public class ExtensionSpecification
-    {
-        protected static EventBroker eventBroker;
-        protected static SimpleEvent.EventPublisher publisher;
-        protected static SimpleEvent.EventSubscriber subscriber;
-        protected static EventArgs sentEventArgs;
-        protected static Extension extension;
-
-        Establish context = () =>
-            {
-                extension = new Extension();
-                eventBroker = new EventBroker();
-            
-                publisher = new SimpleEvent.EventPublisher();
-                subscriber = new SimpleEvent.EventSubscriber();
-
-                sentEventArgs = new EventArgs();
-            };
-
-        public class Extension : IEventBrokerExtension
+        private class Extension : IEventBrokerExtension
         {
             private readonly StringBuilder log = new StringBuilder();
 
-            public string Log
-            {
-                get { return this.log.ToString(); }
-            }
+            public string Log => this.log.ToString();
 
-            public void FiringEvent(IEventTopicInfo eventTopic, IPublication publication, object sender, EventArgs e)
-            {
+            public void FiringEvent(IEventTopicInfo eventTopic, IPublication publication, object sender, EventArgs e) =>
                 this.log.AppendLine("FiringEvent");
-            }
 
-            public void FiredEvent(IEventTopicInfo eventTopic, IPublication publication, object sender, EventArgs e)
-            {
+            public void FiredEvent(IEventTopicInfo eventTopic, IPublication publication, object sender, EventArgs e) =>
                 this.log.AppendLine("FiredEvent");
-            }
 
-            public void RegisteredItem(object item)
-            {
+            public void RegisteredItem(object item) =>
                 this.log.AppendLine("RegisteredItem");
-            }
 
-            public void UnregisteredItem(object item)
-            {
+            public void UnregisteredItem(object item) =>
                 this.log.AppendLine("UnregisteredItem");
-            }
 
-            public void ScannedInstanceForPublicationsAndSubscriptions(object publisher, IEnumerable<PropertyPublicationScanResult> foundPublications, IEnumerable<PropertySubscriptionScanResult> foundSubscriptions)
-            {
+            public void ScannedInstanceForPublicationsAndSubscriptions(object publisher,
+                IEnumerable<PropertyPublicationScanResult> foundPublications,
+                IEnumerable<PropertySubscriptionScanResult> foundSubscriptions) =>
                 this.log.AppendLine("Scanned");
-            }
 
-            public void ProcessedSubscriber(object subscriber, bool register, IEventTopicHost eventTopicHost)
-            {
-                this.log.AppendLine("ProcessedSubscriber");
-            }
-
-            public void CreatedTopic(IEventTopicInfo eventTopic)
-            {
+            public void CreatedTopic(IEventTopicInfo eventTopic) =>
                 this.log.AppendLine("CreatedTopic");
-            }
 
-            public void CreatedPublication(IEventTopicInfo eventTopic, IPublication publication)
-            {
+            public void CreatedPublication(IEventTopicInfo eventTopic, IPublication publication) =>
                 this.log.AppendLine("CreatedPublication");
-            }
 
-            public void CreatedSubscription(IEventTopicInfo eventTopic, ISubscription subscription)
-            {
+            public void CreatedSubscription(IEventTopicInfo eventTopic, ISubscription subscription) =>
                 this.log.AppendLine("CreatedSubscription");
-            }
 
-            public void AddedPublication(IEventTopicInfo eventTopic, IPublication publication)
-            {
+            public void AddedPublication(IEventTopicInfo eventTopic, IPublication publication) =>
                 this.log.AppendLine("AddedPublication");
-            }
 
-            public void RemovedPublication(IEventTopicInfo eventTopic, IPublication publication)
-            {
+            public void RemovedPublication(IEventTopicInfo eventTopic, IPublication publication) =>
                 this.log.AppendLine("RemovedPublication");
-            }
 
-            public void AddedSubscription(IEventTopicInfo eventTopic, ISubscription subscription)
-            {
+            public void AddedSubscription(IEventTopicInfo eventTopic, ISubscription subscription) =>
                 this.log.AppendLine("AddedSubscription");
-            }
 
-            public void RemovedSubscription(IEventTopicInfo eventTopic, ISubscription subscription)
-            {
+            public void RemovedSubscription(IEventTopicInfo eventTopic, ISubscription subscription) =>
                 this.log.AppendLine("RemovedSubscription");
-            }
 
-            public void Disposed(IEventTopicInfo eventTopic)
-            {
-                this.log.AppendLine("Disposed");
-            }
+            public void Disposed(IEventTopicInfo eventTopic) => this.log.AppendLine("Disposed");
 
-            public void SubscriberExceptionOccurred(IEventTopicInfo eventTopic, Exception exception, ExceptionHandlingContext context)
-            {
+            public void SubscriberExceptionOccurred(
+                IEventTopicInfo eventTopic,
+                Exception exception,
+                ExceptionHandlingContext context) =>
                 this.log.AppendLine("SubscriberExceptionOccured");
-            }
 
-            public void RelayingEvent(IEventTopicInfo eventTopic, IPublication publication, ISubscription subscription, IHandler handler, object sender, EventArgs e)
-            {
+            public void RelayingEvent(
+                IEventTopicInfo eventTopic,
+                IPublication publication,
+                ISubscription subscription,
+                IHandler handler,
+                object sender,
+                EventArgs e) =>
                 this.log.AppendLine("RelayingEvent");
-            }
 
-            public void RelayedEvent(IEventTopicInfo eventTopic, IPublication publication, ISubscription subscription, IHandler handler, object sender, EventArgs e)
-            {
+            public void RelayedEvent(
+                IEventTopicInfo eventTopic,
+                IPublication publication,
+                ISubscription subscription,
+                IHandler handler,
+                object sender,
+                EventArgs e) =>
                 this.log.AppendLine("RelayedEvent");
-            }
 
-            public void SkippedEvent(IEventTopicInfo eventTopic, IPublication publication, ISubscription subscription, object sender, EventArgs e)
-            {
+            public void SkippedEvent(
+                IEventTopicInfo eventTopic,
+                IPublication publication,
+                ISubscription subscription,
+                object sender,
+                EventArgs e) =>
                 this.log.AppendLine("SkippedEvent");
-            }
         }
     }
 }

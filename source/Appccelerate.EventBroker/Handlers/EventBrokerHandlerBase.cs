@@ -51,7 +51,7 @@ namespace Appccelerate.EventBroker.Handlers
         {
             this.ExtensionHost = extensionHost;
         }
-        
+
         public abstract void Handle(IEventTopicInfo eventTopic, object subscriber, object sender, EventArgs e, IDelegateWrapper delegateWrapper);
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Appccelerate.EventBroker.Handlers
         /// <param name="eventTopic">The event topic.</param>
         protected void HandleSubscriberMethodException(TargetInvocationException targetInvocationException, IEventTopicInfo eventTopic)
         {
-            Ensure.ArgumentNotNull(targetInvocationException, "targetInvocationException");
+            Guard.AgainstNullArgument(nameof(targetInvocationException), targetInvocationException);
 
             var innerException = targetInvocationException.InnerException;
             innerException.PreserveStackTrace();
@@ -70,7 +70,7 @@ namespace Appccelerate.EventBroker.Handlers
             var context = new ExceptionHandlingContext();
 
             this.ExtensionHost.ForEach(extension => extension.SubscriberExceptionOccurred(eventTopic, innerException, context));
-                
+
             if (!context.Handled)
             {
                 throw innerException;

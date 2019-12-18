@@ -64,7 +64,7 @@ namespace Appccelerate.EventBroker
         private void SimpleEvent(int runNumber)
         {
             EventBroker eventBroker = new EventBroker();
-            
+
             var p = new Publisher();
             var s = new Subscriber();
 
@@ -135,7 +135,7 @@ namespace Appccelerate.EventBroker
             }
 
             eventBroker.Register(p);
-           
+
             this.Run(
                 p.FireEvent,
                 runNumber + " number of subscribers " + numberOfSubscribersInThisRun,
@@ -157,11 +157,7 @@ namespace Appccelerate.EventBroker
             }
 
             stopwatch.Stop();
-            Console.WriteLine(string.Format(
-                "{0} {1} per event {2:0.000}",
-                message,
-                stopwatch.ElapsedMilliseconds,
-                (double)stopwatch.ElapsedMilliseconds / actualNumberOfEvents));
+            Console.WriteLine($"{message} {stopwatch.ElapsedMilliseconds} per event {(double) stopwatch.ElapsedMilliseconds / actualNumberOfEvents:0.000}");
         }
     }
 }

@@ -46,9 +46,6 @@ namespace Appccelerate.EventBroker.Internals.Exceptions
         /// Gets the method info of the handler with invalid signature.
         /// </summary>
         /// <value>Method info of invalid subscription handler.</value>
-        public MethodInfo MethodInfo
-        {
-            get { return this.methodInfo; }
-        }
+        public MethodInfo MethodInfo => this.methodInfo;
     }
 }

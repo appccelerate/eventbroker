@@ -1,99 +1,34 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0D9D3317-BF5A-4260-958C-C7709D1334B4}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Appccelerate.EventBroker</RootNamespace>
-    <AssemblyName>Appccelerate.EventBroker.Performance</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <CheckNugetDependenciesTask_Enabled>false</CheckNugetDependenciesTask_Enabled>
-    <NuGetPackageImportStamp>38093240</NuGetPackageImportStamp>
+    <TargetFramework>net47</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup>
+    <Title>Appccelerate.EventBroker.Performance</Title>
+    <Copyright>Copyright ©  2008-2019</Copyright>
+    <Authors>Appccelerate team</Authors>
+    <Company>Appccelerate</Company>
+    <Product>Appccelerate</Product>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+  
   <PropertyGroup>
     <AssemblyOriginatorKeyFile />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Appccelerate.Fundamentals">
-      <HintPath>..\packages\Appccelerate.Fundamentals.2.8.0\lib\portable-windows8+net45\Appccelerate.Fundamentals.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
+    <PackageReference Include="Appccelerate.Fundamentals" Version="2.8.0" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Matcher.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\GlobalAssemblyInfo.cs" />
-    <Compile Include="Publisher.cs" />
-    <Compile Include="Runner.cs" />
-    <Compile Include="Subscriber.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="NuGet.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Appccelerate.EventBroker\Appccelerate.EventBroker.csproj">
-      <Project>{74a6407b-55b6-4f03-ba5c-44489dec6d32}</Project>
-      <Name>Appccelerate.EventBroker</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <Import Project="..\packages\Appccelerate.CheckNugetDependenciesTask.0.2.0-Unstable4\build\Appccelerate.CheckNugetDependenciesTask.targets" Condition="Exists('..\packages\Appccelerate.CheckNugetDependenciesTask.0.2.0-Unstable4\build\Appccelerate.CheckNugetDependenciesTask.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.ProductionCode.0.18\build\Appccelerate.development.ProductionCode.targets" Condition="Exists('..\packages\Appccelerate.Development.ProductionCode.0.18\build\Appccelerate.development.ProductionCode.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.0.18\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.18\build\Appccelerate.development.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.VersionTask.1.17.0\build\Appccelerate.VersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.VersionTask.1.17.0\build\Appccelerate.VersionTask.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.CheckNugetDependenciesTask.1.13.0\build\Appccelerate.CheckNugetDependenciesTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.CheckNugetDependenciesTask.1.13.0\build\Appccelerate.CheckNugetDependenciesTask.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.CheckHintPathTask.1.15.0\build\Appccelerate.CheckHintPathTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.CheckHintPathTask.1.15.0\build\Appccelerate.CheckHintPathTask.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.Development.ProductionCode.1.14.0\build\Appccelerate.development.ProductionCode.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.Development.ProductionCode.1.14.0\build\Appccelerate.development.ProductionCode.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.Development.1.14.0\build\Appccelerate.development.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.Development.1.14.0\build\Appccelerate.development.targets'))" />
-  </Target>
-  <Import Project="..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" />
-  <Import Project="..\packages\Appccelerate.VersionTask.1.17.0\build\Appccelerate.VersionTask.targets" Condition="Exists('..\packages\Appccelerate.VersionTask.1.17.0\build\Appccelerate.VersionTask.targets')" />
-  <Import Project="..\packages\Appccelerate.CheckNugetDependenciesTask.1.13.0\build\Appccelerate.CheckNugetDependenciesTask.targets" Condition="Exists('..\packages\Appccelerate.CheckNugetDependenciesTask.1.13.0\build\Appccelerate.CheckNugetDependenciesTask.targets')" />
-  <Import Project="..\packages\Appccelerate.CheckHintPathTask.1.15.0\build\Appccelerate.CheckHintPathTask.targets" Condition="Exists('..\packages\Appccelerate.CheckHintPathTask.1.15.0\build\Appccelerate.CheckHintPathTask.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.ProductionCode.1.14.0\build\Appccelerate.development.ProductionCode.targets" Condition="Exists('..\packages\Appccelerate.Development.ProductionCode.1.14.0\build\Appccelerate.development.ProductionCode.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.1.14.0\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.1.14.0\build\Appccelerate.development.targets')" />
+    <ProjectReference Include="..\Appccelerate.EventBroker\Appccelerate.EventBroker.csproj" />
+  </ItemGroup> 
+  
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>../Analyzers.Productive.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
 </Project>

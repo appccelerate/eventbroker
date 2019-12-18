@@ -19,78 +19,63 @@
 namespace Appccelerate.EventBroker.EventBrokerRegisterables
 {
     using FluentAssertions;
+    using Xbehave;
 
-    using Machine.Specifications;
-
-    [Subject(Subjects.EventRegistrar)]
-    public class When_registering_an_event_broker_registerable_on_the_event_broker
+    public class EventBrokerSpecifications
     {
-        private static EventBroker eventBroker;
+        [Scenario]
+        public void Register(
+            EventBroker eventBroker,
+            Registerable registerable)
+        {
+            "Given an event broker".x(() =>
+                eventBroker = new EventBroker());
 
-        private static Registerable registerable;
+            "And a registerable".x(() =>
+                registerable = new Registerable());
 
-        Establish context = () =>
+            "When register".x(() =>
             {
-                eventBroker = new EventBroker();
-                registerable = new Registerable();
-            };
+                eventBroker.Register(registerable);
+            });
 
-        Because of = () =>
+            "It should have registered the registerable".x(() =>
+                registerable.WasRegistered
+                .Should().BeTrue("register should be called"));
+        }
+
+        [Scenario]
+        public void Unregister(
+            EventBroker eventBroker,
+            Registerable registerable)
+        {
+            "Given an event broker".x(() =>
+                eventBroker = new EventBroker());
+
+            "And a registerable".x(() =>
+                registerable = new Registerable());
+
+            "When unregister".x(() =>
             {
                 eventBroker.Register(registerable);
                 eventBroker.Unregister(registerable);
-            };
+            });
 
-        It should_call_register_on_registerable = () =>
-            registerable.WasRegistered
-                .Should().BeTrue("register should be called");
+            "It should have unregistered the registerable".x(() => registerable.WasUnregistered
+                .Should().BeTrue("unregister should be called"));
+        }
 
-        private class Registerable : IEventBrokerRegisterable
+        public class Registerable : IEventBrokerRegisterable
         {
             public bool WasRegistered { get; private set; }
 
-            public void Register(IEventRegistrar eventRegistrar)
-            {
-                this.WasRegistered = true;
-            }
-
-            public void Unregister(IEventRegistrar eventRegistrar)
-            {
-            }
-        }
-    }
-
-    [Subject(Subjects.EventRegistrar)]
-    public class When_unregistering_an_event_broker_registerable_on_the_event_broker
-    {
-        private static EventBroker eventBroker;
-
-        private static Registerable registerable;
-
-        private Establish context = () =>
-            {
-                eventBroker = new EventBroker();
-                registerable = new Registerable();
-            };
-
-        private Because of = () =>
-            eventBroker.Unregister(registerable);
-
-        private It should_call_unregister_on_registerable = () => 
-            registerable.WasUnregistered.Should().BeTrue("register should be called");
-
-        private class Registerable : IEventBrokerRegisterable
-        {
             public bool WasUnregistered { get; private set; }
 
-            public void Register(IEventRegistrar eventRegistrar)
-            {
-            }
+            public void Register(IEventRegistrar eventRegistrar) =>
+                this.WasRegistered = true;
 
-            public void Unregister(IEventRegistrar eventRegistrar)
-            {
+            public void Unregister(IEventRegistrar eventRegistrar) =>
                 this.WasUnregistered = true;
-            }
         }
     }
 }

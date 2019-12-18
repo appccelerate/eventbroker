@@ -19,42 +19,38 @@
 namespace Appccelerate.EventBroker.Registration.Subscribers
 {
     using FluentAssertions;
-    using Machine.Specifications;
+    using Xbehave;
 
-    [Subject(Subscribers.RegisteringEventBrokerRegisterables)]
-    public class When_defining_an_subscriber_as_an_event_broker_registerable
+    public class EventBrokerRegisterableSpecifications
     {
-        static EventBroker eventBroker;
-        static EventBrokerRegisterableSubscriber subscriber;
-
-        static bool registerWasCalled;
-        static bool unregisterWasCalled;
-
-        Establish context = () =>
+        [Scenario]
+        public void RegisterUnregister(
+            EventBroker eventBroker,
+            EventBrokerRegisterableSubscriber subscriber,
+            bool registerWasCalled,
+            bool unregisterWasCalled)
+        {
+            "Establish an event broker and a subscriber".x(() =>
             {
-                registerWasCalled = false;
-                unregisterWasCalled = false;
-
                 eventBroker = new EventBroker();
-                subscriber = new EventBrokerRegisterableSubscriber();        
-            };
+                subscriber = new EventBrokerRegisterableSubscriber();
+            });
 
-        Because of = () =>
+            "When registering and unregistering".x(() =>
             {
                 eventBroker.Register(subscriber);
-
                 registerWasCalled = subscriber.RegisterWasCalled;
 
                 eventBroker.Unregister(subscriber);
-
                 unregisterWasCalled = subscriber.UnregisterWasCalled;
-            };
+            });
 
-        It should_call_register_on_subscriber_when_it_is_registered_on_event_broker = () =>
-            registerWasCalled.Should().BeTrue();
+            "It should register on subscriber when it is registered on event broker".x(() =>
+                registerWasCalled.Should().BeTrue());
 
-        It should_call_unregister_on_subscriber_when_it_is_unregistered_from_event_broker = () =>
-            unregisterWasCalled.Should().BeTrue();
+            "It should unregister on subscriber when it is unregistered from event broker".x(() =>
+                unregisterWasCalled.Should().BeTrue());
+        }
 
         public class EventBrokerRegisterableSubscriber : IEventBrokerRegisterable
         {
@@ -62,15 +58,9 @@ namespace Appccelerate.EventBroker.Registration.Subscribers
 
             public bool UnregisterWasCalled { get; private set; }
 
-            public void Register(IEventRegistrar eventRegistrar)
-            {
-                this.RegisterWasCalled = true;
-            }
+            public void Register(IEventRegistrar eventRegistrar) => this.RegisterWasCalled = true;
 
-            public void Unregister(IEventRegistrar eventRegistrar)
-            {
-                this.UnregisterWasCalled = true;
-            }
+            public void Unregister(IEventRegistrar eventRegistrar) => this.UnregisterWasCalled = true;
         }
     }
 }

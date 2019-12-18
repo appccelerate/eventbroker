@@ -25,7 +25,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
     using Appccelerate.EventBroker.Matchers;
 
     /// <summary>
-    /// A spontaneous publication is used when there is no real publisher but 
+    /// A spontaneous publication is used when there is no real publisher but
     /// <see cref="EventBroker.Fire"/> was called directly to fire an event.
     /// </summary>
     internal class SpontaneousPublication : Publication
@@ -40,27 +40,15 @@ namespace Appccelerate.EventBroker.Internals.Publications
             this.eventArgsType = eventArgsType;
         }
 
-        public override string EventName
-        {
-            get { return SpontaneousEventName; }
-        }
+        public override string EventName => SpontaneousEventName;
 
-        public override Type EventArgsType
-        {
-            get
-            {
-                return this.eventArgsType;
-            }
-        }
+        public override Type EventArgsType => this.eventArgsType;
 
-        public override bool AllowsMultipleRegistrationsOnSamePublisher
-        {
-            get { return true; }
-        }
+        public override bool AllowsMultipleRegistrationsOnSamePublisher => true;
 
         public override void DescribeTo(TextWriter writer)
         {
-            Ensure.ArgumentNotNull(writer, "writer");
+            Guard.AgainstNullArgument(nameof(writer), writer);
 
             writer.Write(", spontaneous publication");
         }

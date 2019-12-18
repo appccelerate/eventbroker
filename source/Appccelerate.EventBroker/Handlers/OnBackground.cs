@@ -33,13 +33,7 @@ namespace Appccelerate.EventBroker.Handlers
         /// Gets the kind of the handler, whether it is a synchronous or asynchronous handler.
         /// </summary>
         /// <value>The kind of the handler (synchronous or asynchronous).</value>
-        public override HandlerKind Kind
-        {
-            get
-            {
-                return HandlerKind.Asynchronous;
-            }
-        }
+        public override HandlerKind Kind => HandlerKind.Asynchronous;
 
         public override void Handle(IEventTopicInfo eventTopic, object subscriber, object sender, EventArgs e, IDelegateWrapper delegateWrapper)
         {
