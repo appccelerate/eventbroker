@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="SubscriberHandlerNotFoundException.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ namespace Appccelerate.EventBroker.Internals.Exceptions
         /// The type of the subscriber.
         /// </summary>
         private readonly Type subscriberType;
-        
+
         /// <summary>
         /// The name of the handler method.
         /// </summary>
@@ -42,7 +42,7 @@ namespace Appccelerate.EventBroker.Internals.Exceptions
         /// </summary>
         /// <param name="subscriberType">Type of the subscriber.</param>
         /// <param name="handlerMethodName">Name of the handler method.</param>
-        public SubscriberHandlerNotFoundException(Type subscriberType, string handlerMethodName) 
+        public SubscriberHandlerNotFoundException(Type subscriberType, string handlerMethodName)
             : base("Subscriber handler not found: '{0}.{1}'", subscriberType.FullName, handlerMethodName)
         {
             this.subscriberType = subscriberType;

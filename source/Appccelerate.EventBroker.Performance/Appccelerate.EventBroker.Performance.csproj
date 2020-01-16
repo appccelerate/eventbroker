@@ -8,12 +8,12 @@
 
   <PropertyGroup>
     <Title>Appccelerate.EventBroker.Performance</Title>
-    <Copyright>Copyright ©  2008-2019</Copyright>
+    <Copyright>Copyright ©  2008-2020</Copyright>
     <Authors>Appccelerate team</Authors>
     <Company>Appccelerate</Company>
     <Product>Appccelerate</Product>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <AssemblyOriginatorKeyFile />
   </PropertyGroup>
@@ -26,8 +26,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Appccelerate.EventBroker\Appccelerate.EventBroker.csproj" />
-  </ItemGroup> 
-  
+  </ItemGroup>
+
   <PropertyGroup>
     <CodeAnalysisRuleSet>../Analyzers.Productive.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

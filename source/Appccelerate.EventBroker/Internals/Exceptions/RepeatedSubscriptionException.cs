@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="RepeatedSubscriptionException.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -32,8 +32,8 @@ namespace Appccelerate.EventBroker.Internals.Exceptions
         /// <param name="handlerMethodName">Name of the handler method.</param>
         public RepeatedSubscriptionException(object subscriber, string handlerMethodName)
             : base(
-                "Cannot add more than one subscription handler method of the same subscriber one topic: '{0}.{1}'.", 
-                subscriber.GetType().FullName, 
+                "Cannot add more than one subscription handler method of the same subscriber one topic: '{0}.{1}'.",
+                subscriber.GetType().FullName,
                 handlerMethodName)
         {
         }

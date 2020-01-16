@@ -7,12 +7,12 @@
 
   <PropertyGroup>
     <Title>Appccelerate.EventBroker.Facts</Title>
-    <Copyright>Copyright ©  2008-2019</Copyright>
+    <Copyright>Copyright ©  2008-2020</Copyright>
     <Authors>Appccelerate team</Authors>
     <Company>Appccelerate</Company>
     <Product>Appccelerate</Product>
-  </PropertyGroup>  
-  
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Appccelerate.Fundamentals" Version="2.8.0" />
     <PackageReference Include="FakeItEasy" Version="1.25.1" />

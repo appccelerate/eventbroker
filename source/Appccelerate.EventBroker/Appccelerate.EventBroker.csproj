@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <Title>Appccelerate.EventBroker</Title>
-    <Copyright>Copyright ©  2008-2019</Copyright>
+    <Copyright>Copyright ©  2008-2020</Copyright>
     <Authors>Appccelerate team</Authors>
     <Company>Appccelerate</Company>
     <Product>Appccelerate</Product>
@@ -31,7 +31,7 @@
     <PackageReleaseNotes>
       4.0.0:
 	  - Supports now .NET Standard 2.0
-      
+
 	  3.1.15
       - Fixed missing call to base.Initialize in OnUserInterface and OnUserInterfaceAsync handlers resulting in NullReferenceExceptions on ExtensionHost.
     </PackageReleaseNotes>
@@ -76,7 +76,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <None Include="Appccelerate.Public.snk" />
     <None Include="Appccelerate.snk" />

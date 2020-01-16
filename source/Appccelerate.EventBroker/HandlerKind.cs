@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="HandlerKind.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -24,13 +24,13 @@ namespace Appccelerate.EventBroker
     public enum HandlerKind
     {
         /// <summary>
-        /// Synchronous handling. The event invoker is blocked until event is handled. 
+        /// Synchronous handling. The event invoker is blocked until event is handled.
         /// The event invoker can evaluate the event arguments on return.
         /// </summary>
         Synchronous = 0,
 
         /// <summary>
-        /// Asynchronous handling. The event invoker is not blocked until event is handled. 
+        /// Asynchronous handling. The event invoker is not blocked until event is handled.
         /// The event invoker must not evaluate the event arguments on return.
         /// </summary>
         Asynchronous = 1,
