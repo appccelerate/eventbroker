@@ -1,134 +1,35 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BDBFC712-44CF-42CA-892A-0CF467FC1F3C}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Appccelerate.EventBroker</RootNamespace>
-    <AssemblyName>Appccelerate.EventBroker.Specs</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>1956391b</NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFramework>net47</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <NoWarn>67</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>67</NoWarn>
+
+  <PropertyGroup>
+    <Title>Appccelerate.EventBroker.Specs</Title>
+    <Copyright>Copyright ©  2008-2020</Copyright>
+    <Authors>Appccelerate team</Authors>
+    <Company>Appccelerate</Company>
+    <Product>Appccelerate</Product>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Appccelerate.Fundamentals">
-      <HintPath>..\packages\Appccelerate.Fundamentals.2.8.0\lib\portable-windows8+net45\Appccelerate.Fundamentals.dll</HintPath>
-    </Reference>
-    <Reference Include="FakeItEasy">
-      <HintPath>..\packages\FakeItEasy.1.25.1\lib\net40\FakeItEasy.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentAssertions">
-      <HintPath>..\packages\FluentAssertions.3.2.2\lib\net45\FluentAssertions.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentAssertions.Core">
-      <HintPath>..\packages\FluentAssertions.3.2.2\lib\net45\FluentAssertions.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Machine.Specifications">
-      <HintPath>..\packages\Machine.Specifications.0.9.1\lib\net45\Machine.Specifications.dll</HintPath>
-    </Reference>
-    <Reference Include="Machine.Specifications.Clr4">
-      <HintPath>..\packages\Machine.Specifications.0.9.1\lib\net45\Machine.Specifications.Clr4.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
+    <PackageReference Include="Appccelerate.Fundamentals" Version="2.8.0" />
+    <PackageReference Include="FakeItEasy" Version="1.25.1" />
+    <PackageReference Include="FluentAssertions" Version="3.2.2" />
+    <PackageReference Include="Machine.Specifications" Version="0.9.1" />
+    <PackageReference Include="Xbehave" Version="2.4.0" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="xunit">
-      <HintPath>..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomEvent.cs" />
-    <Compile Include="Description\DescribeToSpecifications.cs" />
-    <Compile Include="EventBrokerRegisterables\EventBrokerRegisterablesSpecifications.cs" />
-    <Compile Include="Extensions\ExtensionSpecifications.cs" />
-    <Compile Include="FireEventsDirectlyOnEventBrokerSpecifications.cs" />
-    <Compile Include="HandlerRestrictions\HandlerRestrictionEvent.cs" />
-    <Compile Include="HandlerRestrictions\HandlerRestrictionsSpecifications.cs" />
-    <Compile Include="InterfaceRegistration\InterfaceRegistrationSpecifications.cs" />
-    <Compile Include="Matchers\GlobalMatchersSpecifications.cs" />
-    <Compile Include="Matchers\PublicationMatchersSpecifications.cs" />
-    <Compile Include="Matchers\SubscriptionMatchersSpecifications.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\GlobalAssemblyInfo.cs" />
-    <Compile Include="Registration\Publishers\RegisterHandlerMethodsDirectlyOnEventBrokerSpecifications.cs" />
-    <Compile Include="Registration\RegistrationExceptionsSpecifications.cs" />
-    <Compile Include="Registration\Subscribers\EventBrokerRegisterableSpecifications.cs" />
-    <Compile Include="Registration\Subscribers\SubscriberExceptionsSpecifications.cs" />
-    <Compile Include="Registration\Subscribers\Subscribers.cs" />
-    <Compile Include="Registration\Subscribers\SubscribersWithoutSenderAndUnwrappedEventArgsSpecifications.cs" />
-    <Compile Include="Registration\Subscribers\SubscribersWithoutSenderAndWithoutEventArgsSpecifications.cs" />
-    <Compile Include="Registration\Subscribers\SubscribersWithoutSenderSpecifications.cs" />
-    <Compile Include="Registration\Subscribers\SubscribersWithSenderAndCustomEventArgsSpecifications.cs" />
-    <Compile Include="Registration\Subscribers\SubscribersWithSenderAndEventArgsSpecifications.cs" />
-    <Compile Include="Routing\RoutingSpecifications.cs" />
-    <Compile Include="ScopeEvent.cs" />
-    <Compile Include="Scoping\ScopeSpecifications.cs" />
-    <Compile Include="SimpleEvent.cs" />
-    <Compile Include="Subjects.cs" />
-    <Compile Include="WeakReferences\EventBrokerCleanupSpecifications.cs" />
+    <ProjectReference Include="..\Appccelerate.EventBroker\Appccelerate.EventBroker.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="NuGet.config" />
-    <None Include="packages.config" />
-    <None Include="Settings.stylecop" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Appccelerate.EventBroker\Appccelerate.EventBroker.csproj">
-      <Project>{74a6407b-55b6-4f03-ba5c-44489dec6d32}</Project>
-      <Name>Appccelerate.EventBroker</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <Import Project="..\packages\Appccelerate.Development.Specs.0.18\build\Appccelerate.Development.Specs.targets" Condition="Exists('..\packages\Appccelerate.Development.Specs.0.18\build\Appccelerate.Development.Specs.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.0.18\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.0.18\build\Appccelerate.development.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets'))" />
-    <Error Condition="!Exists('..\packages\xunit.MSBuild.1.9.2.3\build\xunit.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.MSBuild.1.9.2.3\build\xunit.MSBuild.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.VersionTask.1.17.0\build\Appccelerate.VersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.VersionTask.1.17.0\build\Appccelerate.VersionTask.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.CheckHintPathTask.1.15.0\build\Appccelerate.CheckHintPathTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.CheckHintPathTask.1.15.0\build\Appccelerate.CheckHintPathTask.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.Development.Specs.1.14.0\build\Appccelerate.Development.Specs.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.Development.Specs.1.14.0\build\Appccelerate.Development.Specs.targets'))" />
-    <Error Condition="!Exists('..\packages\Appccelerate.Development.1.14.0\build\Appccelerate.development.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Appccelerate.Development.1.14.0\build\Appccelerate.development.targets'))" />
-  </Target>
-  <Import Project="..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" />
-  <Import Project="..\packages\xunit.MSBuild.1.9.2.3\build\xunit.MSBuild.targets" Condition="Exists('..\packages\xunit.MSBuild.1.9.2.3\build\xunit.MSBuild.targets')" />
-  <Import Project="..\packages\Appccelerate.VersionTask.1.17.0\build\Appccelerate.VersionTask.targets" Condition="Exists('..\packages\Appccelerate.VersionTask.1.17.0\build\Appccelerate.VersionTask.targets')" />
-  <Import Project="..\packages\Appccelerate.CheckHintPathTask.1.15.0\build\Appccelerate.CheckHintPathTask.targets" Condition="Exists('..\packages\Appccelerate.CheckHintPathTask.1.15.0\build\Appccelerate.CheckHintPathTask.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.Specs.1.14.0\build\Appccelerate.Development.Specs.targets" Condition="Exists('..\packages\Appccelerate.Development.Specs.1.14.0\build\Appccelerate.Development.Specs.targets')" />
-  <Import Project="..\packages\Appccelerate.Development.1.14.0\build\Appccelerate.development.targets" Condition="Exists('..\packages\Appccelerate.Development.1.14.0\build\Appccelerate.development.targets')" />
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>../Analyzers.Specs.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
 </Project>

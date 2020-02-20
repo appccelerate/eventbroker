@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="Subscription.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
     using System.Collections.Generic;
     using System.IO;
     using Appccelerate.EventBroker.Matchers;
-    using Appccelerate.Formatters;
 
     /// <summary>
     /// Represents a topic subscription.
@@ -33,7 +32,7 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
         private readonly IList<ISubscriptionMatcher> subscriptionMatchers;
         private readonly IHandler handler;
         private readonly IExtensionHost extensionHost;
-        
+
         private readonly DelegateWrapper delegateWrapper;
 
         public Subscription(
@@ -50,30 +49,15 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
             this.extensionHost = extensionHost;
         }
 
-        public Type EventArgsType
-        {
-            get { return this.delegateWrapper.EventArgsType; }
-        }
+        public Type EventArgsType => this.delegateWrapper.EventArgsType;
 
-        public object Subscriber
-        {
-            get { return this.subscriber.Target; }
-        }
+        public object Subscriber => this.subscriber.Target;
 
-        public string HandlerMethodName
-        {
-            get { return this.delegateWrapper.HandlerMethod.Name; }
-        }
+        public string HandlerMethodName => this.delegateWrapper.HandlerMethod.Name;
 
-        public IHandler Handler
-        {
-            get { return this.handler; }
-        }
+        public IHandler Handler => this.handler;
 
-        public IList<ISubscriptionMatcher> SubscriptionMatchers
-        {
-            get { return this.subscriptionMatchers; }
-        }
+        public IList<ISubscriptionMatcher> SubscriptionMatchers => this.subscriptionMatchers;
 
         public EventTopicFireDelegate GetHandler()
         {
@@ -82,7 +66,7 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
 
         public void DescribeTo(TextWriter writer)
         {
-            Ensure.ArgumentNotNull(writer, "writer");
+            Guard.AgainstNullArgument(nameof(writer), writer);
 
             if (!this.subscriber.IsAlive)
             {
@@ -100,7 +84,7 @@ namespace Appccelerate.EventBroker.Internals.Subscriptions
 
             writer.Write(", Handler method = ");
             writer.Write(this.HandlerMethodName);
-                
+
             writer.Write(", Handler = ");
             writer.Write(this.handler.GetType().FullNameToString());
 

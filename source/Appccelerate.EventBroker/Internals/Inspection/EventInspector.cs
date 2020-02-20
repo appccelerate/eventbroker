@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="EventInspector.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -48,8 +48,8 @@ namespace Appccelerate.EventBroker.Internals.Inspection
 
         public EventInfo ScanPublisherForEvent(object publisher, string eventName)
         {
-            Ensure.ArgumentNotNull(publisher, "publisher");
-            Ensure.ArgumentNotNullOrEmpty(eventName, "eventName");
+            Guard.AgainstNullArgument(nameof(publisher), publisher);
+            Guard.AgainstNullOrEmpty(nameof(eventName), eventName);
 
             EventInfo eventInfo = publisher.GetType().GetEvent(eventName);
 
@@ -71,7 +71,7 @@ namespace Appccelerate.EventBroker.Internals.Inspection
                                from EventPublicationAttribute attr in
                                    eventInfo.GetCustomAttributes(typeof(EventPublicationAttribute), true)
                                select new PropertyPublicationScanResult(attr.Topic, eventInfo, attr.HandlerRestriction, attr.MatcherTypes);
-            
+
             return publications.ToList();
         }
 

@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="OnPublisher.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -32,14 +32,11 @@ namespace Appccelerate.EventBroker.Handlers
         /// Gets the kind of the handler, whether it is a synchronous or asynchronous handler.
         /// </summary>
         /// <value>The kind of the handler (synchronous or asynchronous).</value>
-        public override HandlerKind Kind
-        {
-            get { return HandlerKind.Synchronous; }
-        }
-        
+        public override HandlerKind Kind => HandlerKind.Synchronous;
+
         public override void Handle(IEventTopicInfo eventTopic, object subscriber, object sender, EventArgs e, IDelegateWrapper delegateWrapper)
         {
-            Ensure.ArgumentNotNull(delegateWrapper, "delegateWrapper");
+            Guard.AgainstNullArgument(nameof(delegateWrapper), delegateWrapper);
 
             try
             {

@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="InvalidSubscriptionSignatureException.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -46,9 +46,6 @@ namespace Appccelerate.EventBroker.Internals.Exceptions
         /// Gets the method info of the handler with invalid signature.
         /// </summary>
         /// <value>Method info of invalid subscription handler.</value>
-        public MethodInfo MethodInfo
-        {
-            get { return this.methodInfo; }
-        }
+        public MethodInfo MethodInfo => this.methodInfo;
     }
 }

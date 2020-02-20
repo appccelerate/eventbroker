@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="ScopeEvent.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -44,27 +44,21 @@ namespace Appccelerate.EventBroker
             [EventPublication(EventTopic, typeof(PublishToChildren))]
             public event EventHandler EventFiredToChildrenAndSiblings;
 
-            public string EventBrokerItemName
-            {
-                get
-                {
-                    return this.name;
-                }
-            }
+            public string EventBrokerItemName => this.name;
 
             public void FireEventGlobally()
             {
-                this.EventFiredGlobally(this, EventArgs.Empty);
+                this.EventFiredGlobally?.Invoke(this, EventArgs.Empty);
             }
 
             public void FireEventToParentsAndSiblings()
             {
-                this.EventFiredToParentsAndSiblings(this, EventArgs.Empty);
+                this.EventFiredToParentsAndSiblings?.Invoke(this, EventArgs.Empty);
             }
 
             public void FireEventToChildrenAndSiblings()
             {
-                this.EventFiredToChildrenAndSiblings(this, EventArgs.Empty);
+                this.EventFiredToChildrenAndSiblings?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -83,13 +77,7 @@ namespace Appccelerate.EventBroker
 
             public bool CalledFromChild { get; set; }
 
-            public string EventBrokerItemName
-            {
-                get
-                {
-                    return this.name;
-                }
-            }
+            public string EventBrokerItemName => this.name;
 
             [EventSubscription(EventTopic, typeof(Handlers.OnPublisher))]
             public void GlobalHandler(object sender, EventArgs e)
@@ -108,6 +96,6 @@ namespace Appccelerate.EventBroker
             {
                 this.CalledFromChild = true;
             }
-        } 
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="GlobalMatchersSpecifications.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -20,76 +20,87 @@ namespace Appccelerate.EventBroker.Matchers
 {
     using System;
     using System.IO;
-
     using FluentAssertions;
+    using Xbehave;
 
-    using Machine.Specifications;
-
-    public class When_firing_an_event_and_global_matchers_match : GlobalMatcherSpecification
+    public class GlobalMatchersSpecifications
     {
-        Establish context = () => 
-            eventBroker.AddGlobalMatcher(new Matcher());
-
-        Because of = () =>
-            publisher.FireEvent(EventArgs.Empty);
-
-        It should_call_subscriber = () =>
-            subscriber.HandledEvent
-                .Should().BeTrue("matcher should not block call");
-
-        public class Matcher : IMatcher
+        [Scenario]
+        public void Match(
+            EventBroker eventBroker,
+            SimpleEvent.EventPublisher publisher,
+            SimpleEvent.EventSubscriber subscriber)
         {
-            public bool Match(IPublication publication, ISubscription subscription, EventArgs e)
+            "Establish an event broker with a matcher".x(() =>
             {
-                return true;
-            }
+                eventBroker = new EventBroker();
+                eventBroker.AddGlobalMatcher(new Matcher(true));
+            });
+
+            "Establish a registered publisher".x(() =>
+            {
+                publisher = new SimpleEvent.EventPublisher();
+                eventBroker.Register(publisher);
+            });
+
+            "Establish a registered subscriber".x(() =>
+            {
+                subscriber = new SimpleEvent.EventSubscriber();
+                eventBroker.Register(subscriber);
+            });
+
+            "When firing an event".x(() =>
+                publisher.FireEvent(EventArgs.Empty));
+
+            "It should call subscriber".x(() =>
+                subscriber.HandledEvent
+                    .Should().BeTrue("matcher should not block call"));
+        }
+
+        [Scenario]
+        public void NoMatch(
+            EventBroker eventBroker,
+            SimpleEvent.EventPublisher publisher,
+            SimpleEvent.EventSubscriber subscriber)
+        {
+            "Establish an event broker with a matcher".x(() =>
+            {
+                eventBroker = new EventBroker();
+                eventBroker.AddGlobalMatcher(new Matcher(false));
+            });
+
+            "Establish a registered publisher".x(() =>
+            {
+                publisher = new SimpleEvent.EventPublisher();
+                eventBroker.Register(publisher);
+            });
+
+            "Establish a registered subscriber".x(() =>
+            {
+                subscriber = new SimpleEvent.EventSubscriber();
+                eventBroker.Register(subscriber);
+            });
+
+            "When firing an event".x(() =>
+                publisher.FireEvent(EventArgs.Empty));
+
+            "It should not call subscriber".x(() =>
+                subscriber.HandledEvent
+                    .Should().BeFalse("matcher should block call"));
+        }
+
+        private class Matcher : IMatcher
+        {
+            private readonly bool shouldMatch;
+
+            public Matcher(bool shouldMatch) =>
+                this.shouldMatch = shouldMatch;
+
+            public bool Match(IPublication publication, ISubscription subscription, EventArgs e) => this.shouldMatch;
 
             public void DescribeTo(TextWriter writer)
             {
             }
         }
-    }
-
-    public class When_firing_an_event_and_a_global_matcher_does_not_match : GlobalMatcherSpecification
-    {
-        Establish context = () => 
-            eventBroker.AddGlobalMatcher(new Matcher());
-
-        Because of = () =>
-            publisher.FireEvent(EventArgs.Empty);
-
-        It should_not_call_subscriber = () =>
-            subscriber.HandledEvent
-                .Should().BeFalse("matcher should block call");
-
-        public class Matcher : IMatcher
-        {
-            public bool Match(IPublication publication, ISubscription subscription, EventArgs e)
-            {
-                return false;
-            }
-
-            public void DescribeTo(TextWriter writer)
-            {
-            }
-        }
-    }
-
-    [Subject(Subjects.Matchers)]
-    public class GlobalMatcherSpecification
-    {
-        protected static EventBroker eventBroker;
-        protected static SimpleEvent.EventPublisher publisher;
-        protected static SimpleEvent.EventSubscriber subscriber;
-
-        Establish context = () =>
-        {
-            eventBroker = new EventBroker();
-            publisher = new SimpleEvent.EventPublisher();
-            subscriber = new SimpleEvent.EventSubscriber();
-
-            eventBroker.Register(publisher);
-            eventBroker.Register(subscriber);
-        };
     }
 }

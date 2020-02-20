@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="ExceptionExtensionMethods.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ namespace Appccelerate.EventBroker
         /// <returns>Returns the specified exception to allow writing throw exception.preserveStackTrace().</returns>
         public static Exception PreserveStackTrace(this Exception exception)
         {
-            Ensure.ArgumentNotNull(exception, "exception");
+            Guard.AgainstNullArgument(nameof(exception), exception);
 
 #if !SILVERLIGHT
             var remoteStackTraceString = typeof(Exception).GetField("_remoteStackTraceString", BindingFlags.Instance | BindingFlags.NonPublic);

@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="RoutingSpecifications.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -20,115 +20,240 @@ namespace Appccelerate.EventBroker.Routing
 {
     using System;
     using System.ComponentModel;
-
     using Appccelerate.Events;
-
     using FluentAssertions;
+    using Xbehave;
 
-    using Machine.Specifications;
-
-    [Subject(Subjects.Events)]
-    public class When_firing_an_event_on_a_publisher
+    public class RoutingSpecifications
     {
-        static EventBroker eventBroker;
-        static SimpleEvent.EventPublisher publisher;
-        static SimpleEvent.EventSubscriber subscriber;
-        static EventArgs sentEventArgs; 
+        private const string EventTopic = "topic://topic";
+        private const string EventTopic1 = "topic://topic1";
+        private const string EventTopic2 = "topic://topic2";
 
-        Establish context = () =>
-            {
-                eventBroker = new EventBroker();
-                publisher = new SimpleEvent.EventPublisher();
-                subscriber = new SimpleEvent.EventSubscriber();
+        private EventBroker eventBroker;
 
-                eventBroker.Register(publisher);
-                eventBroker.Register(subscriber);
-
-                sentEventArgs = new EventArgs(); 
-            };
-
-        Because of = () => 
-            publisher.FireEvent(sentEventArgs);
-
-        It should_call_subscriber = () =>
-            subscriber.HandledEvent
-                .Should().BeTrue("event should be handled by subscriber");
-
-        It should_pass_event_args_to_subscriber = () =>
-            subscriber.ReceivedEventArgs
-                .Should().BeSameAs(sentEventArgs);
-    }
-
-    [Subject(Subjects.Events)]
-    public class When_firing_an_event_with_custom_event_args_on_a_publisher
-    {
-        static EventBroker eventBroker;
-        static CustomEvent.EventPublisher publisher;
-        static CustomEvent.EventSubscriber subscriber;
-        static EventArgs<string> sentEventArgs;
-
-        Establish context = () =>
+        [Background]
+        public void SetupEventBroker()
         {
-            eventBroker = new EventBroker();
-            publisher = new CustomEvent.EventPublisher();
-            subscriber = new CustomEvent.EventSubscriber();
+            "Establish an event broker".x(() =>
+                this.eventBroker = new EventBroker());
+        }
 
-            eventBroker.Register(publisher);
-            eventBroker.Register(subscriber);
-
-            sentEventArgs = new EventArgs<string>("test"); 
-        };
-
-        Because of = () =>
-            publisher.FireEvent(sentEventArgs);
-
-        It should_call_subscriber = () =>
-            subscriber.HandledEvent
-                .Should().BeTrue("event should be handled by subscriber");
-
-        It should_pass_event_args_to_subscriber = () =>
-            subscriber.ReceivedEventArgs
-                .Should().BeSameAs(sentEventArgs);
-    }
-
-    [Subject(Subjects.Events)]
-    public class When_firing_an_event_and_subscriber_returns_result_in_event_args
-    {
-        const string EventTopic = "topic://topic";
-
-        static EventBroker eventBroker;
-        static Publisher publisher;
-        static Subscriber subscriber;
-        static CancelEventArgs cancelEventArgs;
-
-        Establish context = () =>
+        [Scenario]
+        public void FireEventOnPublisher(
+            SimpleEvent.EventPublisher publisher,
+            SimpleEvent.EventSubscriber subscriber,
+            EventArgs sentEventArgs)
+        {
+            "Establish a registered publisher".x(() =>
             {
-                eventBroker = new EventBroker();
+                publisher = new SimpleEvent.EventPublisher();
+                this.eventBroker.Register(publisher);
+            });
+
+            "Establish a registered subscriber".x(() =>
+            {
+                subscriber = new SimpleEvent.EventSubscriber();
+                this.eventBroker.Register(subscriber);
+            });
+
+            "Establish the event args".x(() =>
+                sentEventArgs = new EventArgs());
+
+            "When firing the event".x(() =>
+                publisher.FireEvent(sentEventArgs));
+
+            "It should call subscriber".x(() =>
+                subscriber.HandledEvent
+                    .Should().BeTrue("event should be handled by subscriber"));
+
+            "It should pass event args to subscriber".x(() =>
+                subscriber.ReceivedEventArgs
+                    .Should().BeSameAs(sentEventArgs));
+        }
+
+        [Scenario]
+        public void FireEventWithCustomArgsOnPublisher(
+            CustomEvent.EventPublisher publisher,
+            CustomEvent.EventSubscriber subscriber,
+            EventArgs<string> sentEventArgs)
+        {
+            "Establish a registered publisher".x(() =>
+            {
+                publisher = new CustomEvent.EventPublisher();
+                this.eventBroker.Register(publisher);
+            });
+
+            "Establish a registered subscriber".x(() =>
+            {
+                subscriber = new CustomEvent.EventSubscriber();
+                this.eventBroker.Register(subscriber);
+            });
+
+            "Establish the event args".x(() =>
+                sentEventArgs = new EventArgs<string>("value"));
+
+            "When firing the event".x(() =>
+                publisher.FireEvent(sentEventArgs));
+
+            "It should call the subscriber".x(() =>
+                subscriber.HandledEvent
+                    .Should().BeTrue("event should be handled by subscriber"));
+
+            "It should pass event args to the subscriber".x(() =>
+                subscriber.ReceivedEventArgs
+                    .Should().BeSameAs(sentEventArgs));
+        }
+
+        [Scenario]
+        public void FireEventAndSubscriberReturnsResultInArgs(
+            Publisher publisher,
+            Subscriber subscriber,
+            CancelEventArgs cancelEventArgs)
+        {
+            "Establish a registered publisher".x(() =>
+            {
                 publisher = new Publisher();
-                subscriber = new Subscriber();
+                this.eventBroker.Register(publisher);
+            });
 
-                eventBroker.Register(publisher);
-                eventBroker.Register(subscriber);
-
-                cancelEventArgs = new CancelEventArgs(false);
-            };
-
-        Because of = () =>
+            "Establish a registered subscriber".x(() =>
             {
-                publisher.FireEvent(cancelEventArgs);
-            };
+                subscriber = new Subscriber();
+                this.eventBroker.Register(subscriber);
+            });
 
-        It should_return_result_in_event_args = () =>
-            cancelEventArgs.Cancel.Should().BeTrue("result value should be returned to caller");
+            "Establish the event args".x(() =>
+                cancelEventArgs = new CancelEventArgs());
+
+            "When firing the event".x(() =>
+                publisher.FireEvent(cancelEventArgs));
+
+            "It should return result in event args".x(() =>
+                cancelEventArgs.Cancel.Should().BeTrue("result value should be returned to caller"));
+        }
+
+        [Scenario]
+        public void FireEventWithSeveralSubscriber(
+            SimpleEvent.EventPublisher publisher,
+            SimpleEvent.EventSubscriber subscriber1,
+            SimpleEvent.EventSubscriber subscriber2)
+        {
+            "Establish a registered publisher".x(() =>
+            {
+                publisher = new SimpleEvent.EventPublisher();
+                this.eventBroker.Register(publisher);
+            });
+
+            "Establish two registered subscribers".x(() =>
+            {
+                subscriber1 = new SimpleEvent.EventSubscriber();
+                subscriber2 = new SimpleEvent.EventSubscriber();
+                this.eventBroker.Register(subscriber1);
+                this.eventBroker.Register(subscriber2);
+            });
+
+            "When firing the event".x(() =>
+                publisher.FireEvent(EventArgs.Empty));
+
+            "It should call all subscribers".x(() =>
+            {
+                subscriber1.HandledEvent.Should().BeTrue("subscriber1 should be called");
+                subscriber2.HandledEvent.Should().BeTrue("subscriber2 should be called");
+            });
+        }
+
+        [Scenario]
+        public void FireEventWithSeveralPublishersHavingSameEventTopic(
+            SimpleEvent.EventPublisher publisher1,
+            SimpleEvent.EventPublisher publisher2,
+            SimpleEvent.EventSubscriber subscriber)
+        {
+            "Establish two registered publishers".x(() =>
+            {
+                publisher1 = new SimpleEvent.EventPublisher();
+                publisher2 = new SimpleEvent.EventPublisher();
+                this.eventBroker.Register(publisher1);
+                this.eventBroker.Register(publisher2);
+            });
+
+            "Establish a registered subscriber".x(() =>
+            {
+                subscriber = new SimpleEvent.EventSubscriber();
+                this.eventBroker.Register(subscriber);
+            });
+
+            "When firing an event on every publisher".x(() =>
+            {
+                publisher1.FireEvent(EventArgs.Empty);
+                publisher2.FireEvent(EventArgs.Empty);
+            });
+
+            "It should call subscriber every time".x(() =>
+                subscriber.CallCount.Should().Be(2, "subscriber should be called for every fire"));
+        }
+
+        [Scenario]
+        public void FireEventBelongingToSeveralEventTopics(
+            PublisherMultipleTopics publisher,
+            SubscriberMultipleTopics subscriber)
+        {
+            "Establish a registered publisher".x(() =>
+            {
+                publisher = new PublisherMultipleTopics();
+                this.eventBroker.Register(publisher);
+            });
+
+            "Establish a registered subscriber".x(() =>
+            {
+                subscriber = new SubscriberMultipleTopics();
+                this.eventBroker.Register(subscriber);
+            });
+
+            "When firing the event".x(() =>
+                publisher.FireEvent());
+
+            "It should fire all event topics".x(() =>
+            {
+                subscriber.HandledEventTopic1.Should().BeTrue("EventTopic1 should be handled");
+                subscriber.HandledEventTopic2.Should().BeTrue("EventTopic2 should be handled");
+            });
+        }
+
+        [Scenario]
+        public void FireDifferentEventsHandledBySameHandler(
+            PublisherMultipleTopicsMultipleMethods publisher,
+            SubscriberHandlesMultipleTopics subscriber)
+        {
+            "Establish a registered publisher".x(() =>
+            {
+                publisher = new PublisherMultipleTopicsMultipleMethods();
+                this.eventBroker.Register(publisher);
+            });
+
+            "Establish a registered subscriber".x(() =>
+            {
+                subscriber = new SubscriberHandlesMultipleTopics();
+                this.eventBroker.Register(subscriber);
+            });
+
+            "When firing two different events".x(() =>
+            {
+                publisher.FireEvent1();
+                publisher.FireEvent2();
+            });
+
+            "It should handle all registered event topics".x(() =>
+                subscriber.CallCount.Should().Be(2));
+        }
 
         public class Publisher
         {
             [EventPublication(EventTopic)]
             public event EventHandler<CancelEventArgs> Event;
-
             public void FireEvent(CancelEventArgs cancelEventArgs)
             {
-                this.Event(this, cancelEventArgs);
+                this.Event?.Invoke(this, cancelEventArgs);
             }
         }
 
@@ -140,171 +265,35 @@ namespace Appccelerate.EventBroker.Routing
                 cancelEventArgs.Cancel = true;
             }
         }
-    }
 
-    [Subject(Subjects.Events)]
-    public class When_firing_an_event_with_several_subscribers
-    {
-        static EventBroker eventBroker;
-        static SimpleEvent.EventPublisher publisher;
-        static SimpleEvent.EventSubscriber subscriber1;
-        static SimpleEvent.EventSubscriber subscriber2;
-        
-        Establish context = () =>
-            {
-                eventBroker = new EventBroker();
-                
-                publisher = new SimpleEvent.EventPublisher();
-                subscriber1 = new SimpleEvent.EventSubscriber();
-                subscriber2 = new SimpleEvent.EventSubscriber();
-
-                eventBroker.Register(publisher);
-                eventBroker.Register(subscriber1);
-                eventBroker.Register(subscriber2);
-            };
-
-        Because of = () =>
-            {
-                publisher.FireEvent(EventArgs.Empty);
-            };
-
-        It should_call_all_subscribers = () =>
-            {
-                subscriber1.HandledEvent.Should().BeTrue("subscriber1 should be called");
-                subscriber2.HandledEvent.Should().BeTrue("subscriber2 should be called");
-            };
-    }
-
-    [Subject(Subjects.Events)]
-    public class When_firing_several_publishers_with_same_event_topic
-    {
-        static EventBroker eventBroker;
-        static SimpleEvent.EventPublisher publisher1;
-        static SimpleEvent.EventPublisher publisher2;
-        static SimpleEvent.EventSubscriber subscriber;
-        
-        Establish context = () =>
-        {
-            eventBroker = new EventBroker();
-
-            publisher1 = new SimpleEvent.EventPublisher();
-            publisher2 = new SimpleEvent.EventPublisher();
-            subscriber = new SimpleEvent.EventSubscriber();
-            
-            eventBroker.Register(publisher1);
-            eventBroker.Register(publisher2);
-            eventBroker.Register(subscriber);
-        };
-
-        Because of = () =>
-        {
-            publisher1.FireEvent(EventArgs.Empty);
-            publisher2.FireEvent(EventArgs.Empty);
-        };
-
-        It should_call_subscriber_every_time = () =>
-        {
-            subscriber.CallCount.Should().Be(2, "subscriber should be called for every fire");
-        };
-    }
-
-    [Subject(Subjects.Events)]
-    public class When_firing_an_event_belonging_to_several_event_topics
-    {
-        const string EventTopic1 = "topic://topic1";
-        const string EventTopic2 = "topic://topic2";
-
-        static EventBroker eventBroker;
-        static Publisher publisher;
-        static Subscriber subscriber;
-
-        Establish context = () =>
-        {
-            eventBroker = new EventBroker();
-
-            publisher = new Publisher();
-            subscriber = new Subscriber();
-
-            eventBroker.Register(publisher);
-            eventBroker.Register(subscriber);
-        };
-
-        Because of = () =>
-        {
-            publisher.FireEvent();
-        };
-
-        It should_fire_all_event_topics = () =>
-            {
-                subscriber.HandledEventTopic1.Should().BeTrue("EventTopic1 should be handled");
-                subscriber.HandledEventTopic2.Should().BeTrue("EventTopic2 should be handled");
-            };
-
-        public class Publisher
+        public class PublisherMultipleTopics
         {
             [EventPublication(EventTopic1)]
             [EventPublication(EventTopic2)]
             public event EventHandler Event;
-
             public void FireEvent()
             {
-                this.Event(this, EventArgs.Empty);
+                this.Event?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        public class Subscriber
+        public class SubscriberMultipleTopics
         {
             public bool HandledEventTopic1 { get; private set; }
-
             public bool HandledEventTopic2 { get; private set; }
-
             [EventSubscription(EventTopic1, typeof(Handlers.OnPublisher))]
             public void HandleEventTopic1(object sender, EventArgs eventArgs)
             {
                 this.HandledEventTopic1 = true;
             }
-
             [EventSubscription(EventTopic2, typeof(Handlers.OnPublisher))]
             public void HandleEventTopic2(object sender, EventArgs eventArgs)
             {
                 this.HandledEventTopic2 = true;
             }
         }
-    }
 
-    [Subject(Subjects.Events)]
-    public class When_registering_a_subscriber_handler_method_belonging_to_several_event_topics
-    {
-        const string EventTopic1 = "topic://topic1";
-        const string EventTopic2 = "topic://topic2";
-
-        static EventBroker eventBroker;
-        static Publisher publisher;
-        static Subscriber subscriber;
-
-        Establish context = () =>
-        {
-            eventBroker = new EventBroker();
-
-            publisher = new Publisher();
-            subscriber = new Subscriber();
-
-            eventBroker.Register(publisher);
-            eventBroker.Register(subscriber);
-        };
-
-        Because of = () =>
-        {
-            publisher.FireEvent1();
-            publisher.FireEvent2();
-        };
-
-        It should_handle_all_registered_event_topics = () =>
-        {
-            subscriber.CallCount.Should().Be(2);
-        };
-
-        public class Publisher
+        public class PublisherMultipleTopicsMultipleMethods
         {
             [EventPublication(EventTopic1)]
             public event EventHandler Event1;
@@ -313,26 +302,19 @@ namespace Appccelerate.EventBroker.Routing
             public event EventHandler Event2;
 
             public void FireEvent1()
-            {
-                this.Event1(this, EventArgs.Empty);
-            }
+             => this.Event1?.Invoke(this, EventArgs.Empty);
 
-            public void FireEvent2()
-            {
-                this.Event2(this, EventArgs.Empty);
-            }
+            public void FireEvent2() =>
+                this.Event2?.Invoke(this, EventArgs.Empty);
         }
 
-        public class Subscriber
+        public class SubscriberHandlesMultipleTopics
         {
             public int CallCount { get; private set; }
 
             [EventSubscription(EventTopic1, typeof(Handlers.OnPublisher))]
             [EventSubscription(EventTopic2, typeof(Handlers.OnPublisher))]
-            public void HandleEventTopic1(object sender, EventArgs eventArgs)
-            {
-                this.CallCount++;
-            }
+            public void HandleEventTopic1(object sender, EventArgs eventArgs) => this.CallCount++;
         }
     }
 }

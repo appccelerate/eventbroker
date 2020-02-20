@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="SubscribeGlobal.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ namespace Appccelerate.EventBroker.Matchers.Scope
         /// <param name="writer">The writer the description is written to.</param>
         public void DescribeTo(System.IO.TextWriter writer)
         {
-            Ensure.ArgumentNotNull(writer, "writer");
+            Guard.AgainstNullArgument(nameof(writer), writer);
 
             writer.Write("always");
         }

@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="InterfaceRegistrationSpecifications.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -19,47 +19,45 @@
 namespace Appccelerate.EventBroker.InterfaceRegistration
 {
     using System;
-
     using FluentAssertions;
+    using Xbehave;
 
-    using Machine.Specifications;
-
-    [Subject(Subjects.InterfaceRegistration)]
-    public class When_registering_objects_with_publications_or_subscriptions_on_interface
+    public class InterfaceRegistrationSpecifications
     {
-        const string EventTopic = "topic://topic";
+        private const string EventTopic = "topic://topic";
 
-        static EventBroker eventBroker;
-        static Publisher publisher;
-        static Subscriber subscriber;
-        static EventArgs sentEventArgs;
-
-        Establish context = () =>
+        [Scenario]
+        public void Register(
+            EventBroker eventBroker,
+            Publisher publisher,
+            Subscriber subscriber,
+            EventArgs sentEventArgs)
         {
-            eventBroker = new EventBroker();
-            publisher = new Publisher();
-            subscriber = new Subscriber();
+            "Establish an event broker with one publisher and one subscriber".x(() =>
+            {
+                eventBroker = new EventBroker();
+                publisher = new Publisher();
+                subscriber = new Subscriber();
 
-            eventBroker.Register(publisher);
-            eventBroker.Register(subscriber);
+                eventBroker.Register(publisher);
+                eventBroker.Register(subscriber);
+            });
 
-            sentEventArgs = new EventArgs();
-        };
+            "When firing an event".x(() =>
+                publisher.FireEvent());
 
-        Because of = () =>
-            publisher.FireEvent();
+            "It should register the implementing event and method".x(() =>
+                subscriber.Handled
+                    .Should().BeTrue("event should be handled by subscriber"));
+        }
 
-        It should_register_the_implementing_event_and_method = () =>
-            subscriber.Handled
-                .Should().BeTrue("event should be handled by subscriber");
-
-        public interface IPublisher
+        private interface IPublisher
         {
             [EventPublication(EventTopic)]
             event EventHandler Event;
         }
 
-        public interface ISubscriber
+        private interface ISubscriber
         {
             [EventSubscription(EventTopic, typeof(Handlers.OnPublisher))]
             void Handle(object sender, EventArgs eventArgs);
@@ -71,7 +69,7 @@ namespace Appccelerate.EventBroker.InterfaceRegistration
 
             public void FireEvent()
             {
-                this.Event(this, EventArgs.Empty);
+                this.Event?.Invoke(this, EventArgs.Empty);
             }
         }
 

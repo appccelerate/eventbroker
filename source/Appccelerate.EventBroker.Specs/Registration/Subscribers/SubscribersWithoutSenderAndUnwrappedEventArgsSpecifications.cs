@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="SubscribersWithoutSenderAndUnwrappedEventArgsSpecifications.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -18,48 +18,80 @@
 
 namespace Appccelerate.EventBroker.Registration.Subscribers
 {
-    using System;
     using System.Collections.Generic;
     using Appccelerate.EventBroker.Handlers;
-    using Appccelerate.Events;
     using FluentAssertions;
-    using Machine.Specifications;
+    using Xbehave;
 
-    [Subject(Subscribers.RegisteringHandlerMethods)]
-    public class When_defining_a_handler_method_with_no_sender_and_unwrapped_generic_event_argument_using_registration_by_attribute
+    public class SubscribersWithoutSenderAndUnwrappedEventArgsSpecifications
     {
-        const string Value = "value";
+        private const string Value = "value";
 
-        static EventBroker eventBroker;
-        static Publisher publisher;
-        static SubscriberWithoutSenderAndUnwrappedEventArgs subscriber;
+        private EventBroker eventBroker;
+        private Publisher publisher;
 
-        Establish context = () =>
+        [Background]
+        public void SetupEventBroker()
+        {
+            "Establish an event broker".x(() =>
+                this.eventBroker = new EventBroker());
+
+            "Establish an registered publisher".x(() =>
             {
-                publisher = new Publisher();
-                subscriber = new SubscriberWithoutSenderAndUnwrappedEventArgs();
+                this.publisher = new Publisher();
+                this.eventBroker.Register(this.publisher);
+            });
+        }
 
-                eventBroker = new EventBroker();
+        [Scenario]
+        public void RegisterUnregister(
+            SubscriberWithoutSenderAndUnwrappedEventArgs subscriber)
+        {
+            "Establish a subscriber".x(() =>
+                subscriber = new SubscriberWithoutSenderAndUnwrappedEventArgs());
 
-                eventBroker.Register(publisher);
-            };
-
-        Because of = () =>
+            "When registering, firing an event, unregistering and firing another event".x(() =>
             {
-                eventBroker.Register(subscriber);
+                this.eventBroker.Register(subscriber);
 
-                publisher.FireEvent(Value);
+                this.publisher.FireEvent(Value);
 
-                eventBroker.Unregister(subscriber);
+                this.eventBroker.Unregister(subscriber);
 
-                publisher.FireEvent(Value);
-            };
+                this.publisher.FireEvent(Value);
+            });
 
-        It should_call_handler_method_on_subscriber_with_value_of_generic_event_arguments_from_publisher = () =>
-            subscriber.ReceivedEventArgValues.Should().Contain(Value);
+            "It should call the handler method on the subscriber with the value of the generic event arguments from the publisher".x(() =>
+                subscriber.ReceivedEventArgValues.Should().Contain(Value));
 
-        It should_call_handler_method_only_as_long_as_subscriber_is_registered = () =>
-            subscriber.ReceivedEventArgValues.Should().HaveCount(1, "event should not be routed anymore after subscriber is unregistered.");
+            "It should call the handler method only as long as the subscriber is registered".x(() =>
+                subscriber.ReceivedEventArgValues.Should().HaveCount(1, "event should not be routed anymore after subscriber is unregistered."));
+        }
+
+        [Scenario]
+        public void RegisterUnregisterWithoutAttribute(
+            SubscriberWithoutRegistrationAttributeAndSenderAndUnwrappedEventArgs subscriber)
+        {
+            "Establish a subscriber".x(() =>
+                subscriber = new SubscriberWithoutRegistrationAttributeAndSenderAndUnwrappedEventArgs());
+
+            "When registering, firing an event, unregistering and firing another event".x(() =>
+            {
+                this.eventBroker.SpecialCasesRegistrar.AddSubscription<string>(SimpleEvent.EventTopic, subscriber, subscriber.Handle, new OnPublisher());
+
+                this.publisher.FireEvent(Value);
+
+                this.eventBroker.SpecialCasesRegistrar.RemoveSubscription<string>(SimpleEvent.EventTopic, subscriber, subscriber.Handle);
+
+                this.publisher.FireEvent(Value);
+            });
+
+            "It should call the handler method on the subscriber with the value of the generic event arguments from the publisher".x(() =>
+                subscriber.ReceivedEventArgValues.Should().Contain(Value));
+
+            "It should call the handler method only as long as the subscriber is registered".x(() =>
+                subscriber.ReceivedEventArgValues.Should().HaveCount(1, "event should not be routed anymore after subscriber is unregistered."));
+        }
 
         public class SubscriberWithoutSenderAndUnwrappedEventArgs : SubscriberWithoutSenderAndUnwrappedEventArgsBase
         {
@@ -69,71 +101,23 @@ namespace Appccelerate.EventBroker.Registration.Subscribers
                 this.ReceivedEventArgValues.Add(value);
             }
         }
-    }
 
-    [Subject(Subscribers.RegisteringHandlerMethods)]
-    public class When_defining_a_handler_method_with_no_sender_and_unwrapped_generic_event_argument_using_registration_by_registrar
-    {
-        const string Value = "value";
-
-        static EventBroker eventBroker;
-        static Publisher publisher;
-        static SubscriberWithoutSenderAndUnwrappedEventArgs subscriber;
-
-        Establish context = () =>
-        {
-            publisher = new Publisher();
-            subscriber = new SubscriberWithoutSenderAndUnwrappedEventArgs();
-
-            eventBroker = new EventBroker();
-
-            eventBroker.Register(publisher);
-        };
-
-        Because of = () =>
-        {
-            eventBroker.SpecialCasesRegistrar.AddSubscription<string>(SimpleEvent.EventTopic, subscriber, subscriber.Handle, new OnPublisher());
-
-            publisher.FireEvent(Value);
-
-            eventBroker.SpecialCasesRegistrar.RemoveSubscription<string>(SimpleEvent.EventTopic, subscriber, subscriber.Handle);
-
-            publisher.FireEvent(Value);
-        };
-
-        It should_call_handler_method_on_subscriber_with_value_of_generic_event_arguments_from_publisher = () =>
-            subscriber.ReceivedEventArgValues.Should().Contain(Value);
-
-        It should_call_handler_method_only_as_long_as_subscriber_is_registered = () =>
-            subscriber.ReceivedEventArgValues.Should().HaveCount(1, "event should not be routed anymore after subscriber is unregistered.");
-
-        public class SubscriberWithoutSenderAndUnwrappedEventArgs : SubscriberWithoutSenderAndUnwrappedEventArgsBase
+        public class SubscriberWithoutRegistrationAttributeAndSenderAndUnwrappedEventArgs : SubscriberWithoutSenderAndUnwrappedEventArgsBase
         {
             public void Handle(string value)
             {
                 this.ReceivedEventArgValues.Add(value);
             }
         }
-    }
 
-    public class Publisher
-    {
-        [EventPublication(SimpleEvent.EventTopic)]
-        public event EventHandler<EventArgs<string>> Event;
-
-        public void FireEvent(string value)
+        public class SubscriberWithoutSenderAndUnwrappedEventArgsBase
         {
-            this.Event(this, new EventArgs<string>(value));
-        }
-    }
+            public SubscriberWithoutSenderAndUnwrappedEventArgsBase()
+            {
+                this.ReceivedEventArgValues = new List<object>();
+            }
 
-    public class SubscriberWithoutSenderAndUnwrappedEventArgsBase
-    {
-        public SubscriberWithoutSenderAndUnwrappedEventArgsBase()
-        {
-            this.ReceivedEventArgValues = new List<object>();
+            public List<object> ReceivedEventArgValues { get; private set; }
         }
-
-        public List<object> ReceivedEventArgValues { get; private set; }
     }
 }

@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="EventTopicException.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -104,17 +104,11 @@ namespace Appccelerate.EventBroker.Internals.Exceptions
         /// <summary>
         /// Gets the list of exceptions that occurred during the subscribers invocation.
         /// </summary>
-        public ReadOnlyCollection<Exception> Exceptions
-        {
-            get { return this.exceptions; }
-        }
+        public ReadOnlyCollection<Exception> Exceptions => this.exceptions;
 
         /// <summary>
         /// Gets the <see cref="IEventTopic"/> which incurred into errors.
         /// </summary>
-        public IEventTopic Topic
-        {
-            get { return this.topic; }
-        }
+        public IEventTopic Topic => this.topic;
     }
 }

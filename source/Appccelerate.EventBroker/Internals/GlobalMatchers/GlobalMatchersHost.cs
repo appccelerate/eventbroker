@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="GlobalMatchersHost.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -33,13 +33,7 @@ namespace Appccelerate.EventBroker.Internals.GlobalMatchers
         /// Gets the matchers.
         /// </summary>
         /// <value>The matchers.</value>
-        public IEnumerable<IMatcher> Matchers
-        {
-            get
-            {
-                return this.matchers;
-            }
-        }
+        public IEnumerable<IMatcher> Matchers => this.matchers;
 
         /// <summary>
         /// Adds the matcher.

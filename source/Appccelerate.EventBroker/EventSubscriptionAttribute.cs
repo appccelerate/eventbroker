@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="EventSubscriptionAttribute.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ namespace Appccelerate.EventBroker
         /// <param name="matcherTypes">Type of the matchers used for this subscription.</param>
         public EventSubscriptionAttribute(string topic, Type handlerType, params Type[] matcherTypes)
         {
-            Ensure.ArgumentNotNullOrEmpty(topic, "topic");
+            Guard.AgainstNullOrEmpty(nameof(topic), topic);
 
             this.topic = topic;
             this.handlerType = handlerType;
@@ -74,27 +74,18 @@ namespace Appccelerate.EventBroker
         /// <summary>
         /// Gets the name of the <see cref="IEventTopic"/> the decorated method is subscribed to.
         /// </summary>
-        public string Topic
-        {
-            get { return this.topic; }
-        }
+        public string Topic => this.topic;
 
         /// <summary>
         /// Gets the type of the subscription execution handler.
         /// </summary>
         /// <value>The type of the subscription execution handler.</value>
-        public Type HandlerType
-        {
-            get { return this.handlerType; }
-        }
+        public Type HandlerType => this.handlerType;
 
         /// <summary>
         /// Gets the types of the matchers.
         /// </summary>
         /// <value>The types of the matchers.</value>
-        public IEnumerable<Type> MatcherTypes
-        {
-            get { return this.matcherTypes; }
-        }
+        public IEnumerable<Type> MatcherTypes => this.matcherTypes;
     }
 }

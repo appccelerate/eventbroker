@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="PublishToChildren.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -38,8 +38,8 @@ namespace Appccelerate.EventBroker.Matchers.Scope
         /// <returns><code>true</code> if event has to be sent to the subscriber.</returns>
         public bool Match(IPublication publication, ISubscription subscription, EventArgs e)
         {
-            Ensure.ArgumentNotNull(publication, "publication");
-            Ensure.ArgumentNotNull(subscription, "subscription");
+            Guard.AgainstNullArgument(nameof(publication), publication);
+            Guard.AgainstNullArgument(nameof(subscription), subscription);
 
             object publisher = publication.Publisher;
             object subscriber = subscription.Subscriber;
@@ -56,8 +56,8 @@ namespace Appccelerate.EventBroker.Matchers.Scope
         /// <param name="writer">The writer the description is written to.</param>
         public void DescribeTo(System.IO.TextWriter writer)
         {
-            Ensure.ArgumentNotNull(writer, "writer");
-            
+            Guard.AgainstNullArgument(nameof(writer), writer);
+
             writer.Write("subscriber name starts with publisher name");
         }
     }

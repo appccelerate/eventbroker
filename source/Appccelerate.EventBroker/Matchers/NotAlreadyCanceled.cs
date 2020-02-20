@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="NotAlreadyCanceled.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ namespace Appccelerate.EventBroker.Matchers
         /// <param name="writer">The writer the description is written to.</param>
         public void DescribeTo(TextWriter writer)
         {
-            Ensure.ArgumentNotNull(writer, "writer");
+            Guard.AgainstNullArgument(nameof(writer), writer);
 
             writer.Write("event arguments (CancelEventArgs) are not yet canceled");
         }

@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="Publication.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ namespace Appccelerate.EventBroker.Internals.Publications
     using System.IO;
 
     using Appccelerate.EventBroker.Matchers;
-    using Appccelerate.Formatters;
 
     /// <summary>
     /// Represents a topic publication.
@@ -46,39 +45,24 @@ namespace Appccelerate.EventBroker.Internals.Publications
             this.handlerRestriction = handlerRestriction;
             this.publicationMatchers = publicationMatchers;
         }
-        
-        public object Publisher
-        {
-            get { return this.publisher.Target; }
-        }
+
+        public object Publisher => this.publisher.Target;
 
         public abstract string EventName { get; }
 
-        public HandlerRestriction HandlerRestriction
-        {
-            get { return this.handlerRestriction; }
-        }
+        public HandlerRestriction HandlerRestriction => this.handlerRestriction;
 
-        public IList<IPublicationMatcher> PublicationMatchers
-        {
-            get { return this.publicationMatchers; }
-        }
+        public IList<IPublicationMatcher> PublicationMatchers => this.publicationMatchers;
 
         public abstract Type EventArgsType { get; }
 
-        public virtual bool AllowsMultipleRegistrationsOnSamePublisher
-        {
-            get { return false; }
-        }
+        public virtual bool AllowsMultipleRegistrationsOnSamePublisher => false;
 
-        protected bool IsPublisherAlive
-        {
-            get { return this.publisher.IsAlive;  }
-        }
+        protected bool IsPublisherAlive => this.publisher.IsAlive;
 
         public virtual void DescribeTo(TextWriter writer)
         {
-            Ensure.ArgumentNotNull(writer, "writer");
+            Guard.AgainstNullArgument(nameof(writer), writer);
 
             if (!this.publisher.IsAlive)
             {
@@ -92,7 +76,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
                 writer.Write(", Name = ");
                 writer.Write(((INamedItem)this.Publisher).EventBrokerItemName);
             }
-                
+
             writer.Write(", Event = ");
             writer.Write(this.EventName);
             writer.Write(", matchers = ");
@@ -102,7 +86,7 @@ namespace Appccelerate.EventBroker.Internals.Publications
                 writer.Write(" ");
             }
         }
-        
+
         public void Dispose()
         {
             this.Dispose(true);

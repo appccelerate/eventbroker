@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="RegisterHandlerMethodsDirectlyOnEventBrokerSpecifications.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -20,52 +20,55 @@ namespace Appccelerate.EventBroker.Registration.Publishers
 {
     using System;
     using FluentAssertions;
-    using Machine.Specifications;
+    using Xbehave;
 
-    [Subject(Subjects.RegisterDirectlyOnEventBroker)]
-    public class When_defining_an_event_publication_using_registration_by_registrar
+    public class RegisterHandlerMethodsDirectlyOnEventBrokerSpecifications
     {
-        static EventBroker eventBroker;
-        static Publisher publisher;
-        static SimpleEvent.EventSubscriber subscriber;
-        static EventArgs sentEventArguments;
-
-        Establish context = () =>
+        [Scenario]
+        public void Register(
+            EventBroker eventBroker,
+            Publisher publisher,
+            SimpleEvent.EventSubscriber subscriber,
+            EventArgs sentEventArgs)
         {
-            eventBroker = new EventBroker();
-            subscriber = new SimpleEvent.EventSubscriber();
+            "Establish an event broker with one subscriber".x(() =>
+            {
+                eventBroker = new EventBroker();
 
-            eventBroker.Register(subscriber);
+                subscriber = new SimpleEvent.EventSubscriber();
+                eventBroker.Register(subscriber);
 
-            sentEventArguments = new EventArgs();
+                sentEventArgs = new EventArgs();
 
-            publisher = new Publisher();
-        };
+                publisher = new Publisher();
+            });
 
-        Because of = () =>
-        {
-            eventBroker.SpecialCasesRegistrar.AddPublication(
-                SimpleEvent.EventTopic,
-                publisher,
-                "Event",
-                HandlerRestriction.None);
+            "When registering a publisher, sending event, unregistering publisher and sending event".x(() =>
+            {
+                eventBroker.SpecialCasesRegistrar.AddPublication(
+                    SimpleEvent.EventTopic,
+                    publisher,
+                    "Event",
+                    HandlerRestriction.None);
 
-            publisher.FireEvent();
+                publisher.FireEvent();
 
-            eventBroker.SpecialCasesRegistrar.RemovePublication(
-                SimpleEvent.EventTopic,
-                publisher,
-                "Event");
+                eventBroker.SpecialCasesRegistrar.RemovePublication(
+                    SimpleEvent.EventTopic,
+                    publisher,
+                    "Event");
 
-            publisher.FireEvent();
-        };
+                publisher.FireEvent();
+            });
 
-        It should_call_subscriber = () =>
-            subscriber.HandledEvent
-                .Should().BeTrue();
+            "It should call subscriber".x(() =>
+                subscriber.HandledEvent
+                    .Should().BeTrue());
 
-        It should_call_subscriber_only_as_long_as_publisher_is_registered = () =>
-            subscriber.CallCount.Should().Be(1, "event should not be relayed after unregister");
+            "It should call subscriber only as long as publisher is registered".x(() =>
+                subscriber.CallCount
+                    .Should().Be(1, "event should not be relayed after unregister"));
+        }
 
         public class Publisher
         {

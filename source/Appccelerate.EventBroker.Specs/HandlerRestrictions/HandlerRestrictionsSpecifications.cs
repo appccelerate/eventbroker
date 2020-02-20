@@ -1,6 +1,6 @@
 ﻿//-------------------------------------------------------------------------------
 // <copyright file="HandlerRestrictionsSpecifications.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -16,62 +16,60 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
+using Xbehave;
+
 namespace Appccelerate.EventBroker.HandlerRestrictions
 {
     using System;
-
     using Appccelerate.EventBroker.Internals.Exceptions;
-
     using FluentAssertions;
-
     using Machine.Specifications;
 
-    [Subject(Subjects.HandlerRestriction)]
-    public class When_firing_an_event_with_handler_restriction_and_a_matching_subscriber
+    public class HandlerRestrictionSpecifications
     {
-        static EventBroker eventBroker;
-        static HandlerRestrictionEvent.SynchronousSubscriber subscriber;
+        private EventBroker eventBroker;
+        private HandlerRestrictionEvent.SynchronousSubscriber subscriber;
 
-        Establish context = () =>
+        [Background]
+        public void SetupEventBrokerAndEventSubscriber()
         {
-            eventBroker = new EventBroker();
+            "Establish an event broker".x(() =>
+                this.eventBroker = new EventBroker());
 
-            subscriber = new HandlerRestrictionEvent.SynchronousSubscriber();
+            "Establish a registered synchronous event subscriber".x(() =>
+            {
+                this.subscriber = new HandlerRestrictionEvent.SynchronousSubscriber();
+                this.eventBroker.Register(this.subscriber);
+            });
+        }
 
-            eventBroker.Register(subscriber);
-        };
-
-        Because of = () => 
-            eventBroker.Fire(HandlerRestrictionEvent.EventTopic, new object(), HandlerRestriction.Synchronous, new object(), EventArgs.Empty);
-
-        It should_call_subscriber = () =>
-            subscriber.HandledEvent
-                .Should().BeTrue();
-    }
-
-    [Subject(Subjects.HandlerRestriction)]
-    public class When_firing_an_event_with_handler_restriction_and_a_non_matching_subscriber
-    {
-        static EventBroker eventBroker;
-        static HandlerRestrictionEvent.SynchronousSubscriber subscriber;
-        static Exception exception;
-
-        Establish context = () =>
+        [Scenario]
+        public void FireEventWithSubscriber()
         {
-            eventBroker = new EventBroker();
+            "When firing an event".x(() =>
+                this.eventBroker.Fire(
+                    HandlerRestrictionEvent.EventTopic,
+                    new object(),
+                    HandlerRestriction.Synchronous,
+                    new object(),
+                    EventArgs.Empty));
 
-            subscriber = new HandlerRestrictionEvent.SynchronousSubscriber();
+            "It should call the subscriber".x(() =>
+                this.subscriber.HandledEvent
+                    .Should().BeTrue());
+        }
 
-            eventBroker.Register(subscriber);
-        };
-
-        Because of = () =>
+        [Scenario]
+        public void FireEventWithoutSubscriber(
+            Exception exception)
         {
-            exception = Catch.Exception(() =>
-                eventBroker.Fire(HandlerRestrictionEvent.EventTopic, new object(), HandlerRestriction.Asynchronous, new object(), EventArgs.Empty));
-        };
+            "When description".x(() =>
+                exception = Catch.Exception(() => this.eventBroker.Fire(HandlerRestrictionEvent.EventTopic,
+                    new object(), HandlerRestriction.Asynchronous,
+                    new object(), EventArgs.Empty)));
 
-        It should_throw_exception = () =>
-            exception.Should().BeOfType<EventTopicException>();
+            "It should throw an exception".x(() =>
+                exception.Should().BeOfType<EventTopicException>());
+        }
     }
 }

@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="EventTopicHost.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ namespace Appccelerate.EventBroker.Internals
         /// <param name="writer">The writer.</param>
         public void DescribeTo(TextWriter writer)
         {
-            Ensure.ArgumentNotNull(writer, "writer");
+            Guard.AgainstNullArgument(nameof(writer), writer);
 
             foreach (IEventTopic eventTopic in this.eventTopics.Values)
             {

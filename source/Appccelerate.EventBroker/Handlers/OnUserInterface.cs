@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------
 // <copyright file="OnUserInterface.cs" company="Appccelerate">
-//   Copyright (c) 2008-2015
+//   Copyright (c) 2008-2020
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -38,10 +38,7 @@ namespace Appccelerate.EventBroker.Handlers
         /// Gets the kind of the handler, whether it is a synchronous or asynchronous handler.
         /// </summary>
         /// <value>The kind of the handler (synchronous or asynchronous).</value>
-        public override HandlerKind Kind
-        {
-            get { return HandlerKind.Synchronous; }
-        }
+        public override HandlerKind Kind => HandlerKind.Synchronous;
 
         /// <summary>
         /// Initializes the handler with the synchronization context for the user interface thread, which has to be the currently running process.
