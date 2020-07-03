@@ -16,7 +16,10 @@
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryUrl>https://github.com/appccelerate/eventbroker</RepositoryUrl>
-    <PackageIconUrl>https://github.com/appccelerate/appccelerate/raw/master/docs/nuget.png</PackageIconUrl>
+	<PublishRepositoryUrl>true</PublishRepositoryUrl>
+	<EmbedUntrackedSources>true</EmbedUntrackedSources>
+	<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <PackageIcon>icon.png</PackageIcon>
     <description>
       Notification component for synchronous and asynchronous loosely coupled notification with automatic thread switching:
       synchronous and asynchronous notification,
@@ -58,10 +61,11 @@
 
   <!-- versioning -->
   <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <PackageReference Include="MinVer" Version="1.1.0">
+    <PackageReference Include="MinVer" Version="2.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
+    </PackageReference>	
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
   <PropertyGroup>
     <MinVerAutoIncrement>Minor</MinVerAutoIncrement>
@@ -79,6 +83,7 @@
 
   <ItemGroup>
     <None Include="Appccelerate.Public.snk" />
-    <None Include="Appccelerate.snk" />
+    <None Include="Appccelerate.snk" />	
+    <None Include="icon.png" Pack="true" Visible="false" PackagePath="" />
   </ItemGroup>
 </Project>
